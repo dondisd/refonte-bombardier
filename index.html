@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Bombardier · You buy the day back</title>
+<title>Bombardier · Chase the dawn</title>
 <meta name="description" content="The world's fastest private jet, measured in the only unit that matters. Pick a route and read what the stop costs you." />
 <link rel="icon" href="data:," />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -29,144 +29,99 @@
   --shadow:0 24px 48px rgba(0,0,0,0.35);
   --grain-opacity:0.05;
 }
-/* LE CHAMP EST L IVOIRE, L ENCRE EST LE NOIR : memes tokens qu Otis, roles inverses. */
 *{box-sizing:border-box;margin:0;padding:0}
-html{background:var(--text)}
-body{background:var(--text);color:var(--bg);font-family:var(--font-body);font-size:var(--step-body);
+html{background:var(--bg)}
+body{background:var(--bg);color:var(--text);font-family:var(--font-body);font-size:var(--step-body);
   line-height:1.5;-webkit-font-smoothing:antialiased;overflow-x:clip}
 button{font:inherit;color:inherit}
 ::selection{background:var(--signal);color:var(--text)}
 
-/* ---------- HUD en coins, #33 PROMPT ---------- */
+/* HUD en coins, #33 PROMPT */
 .hud{position:fixed;inset:0;z-index:60;pointer-events:none}
 .hud > *{position:absolute;pointer-events:auto}
 .hud .tl{top:clamp(16px,2.4vh,26px);left:clamp(18px,4vw,52px);display:flex;flex-direction:column;gap:0.55em}
-.wm{display:block;width:clamp(84px,8vw,116px);height:auto;color:var(--bg)}
-.hud .cap{font-family:var(--font-mono);font-size:var(--step-label);letter-spacing:0.16em;
-  text-transform:uppercase;color:var(--surface)}
-.hud .tr{top:clamp(16px,2.4vh,26px);right:clamp(18px,4vw,52px);font-family:var(--font-mono);
-  font-size:var(--step-label);letter-spacing:0.16em;text-transform:uppercase;color:var(--surface)}
-.hud .br{bottom:clamp(16px,2.4vh,26px);right:clamp(18px,4vw,52px);text-align:right;
-  font-family:var(--font-mono);font-size:var(--step-label);letter-spacing:0.1em;color:var(--surface);max-width:32ch}
-.hud.onink .wm{color:var(--text)}
-.hud.onink .cap,.hud.onink .tr,.hud.onink .br{color:var(--line)}
+.wm{display:block;width:clamp(84px,8vw,116px);height:auto;color:var(--text)}
+.hud .cap,.hud .tr{font-family:var(--font-mono);font-size:var(--step-label);letter-spacing:0.16em;
+  text-transform:uppercase;color:var(--muted)}
+.hud .tr{top:clamp(16px,2.4vh,26px);right:clamp(18px,4vw,52px)}
 
-/* ---------- architecture #33 : spacer long, tout le visible en fixed ---------- */
-#spacer{position:relative;height:calc(100vh + 5200px)}
-.fixed-layer{position:relative;height:100vh;overflow:hidden;background:var(--text)}
-.grain{position:absolute;inset:0;z-index:58;pointer-events:none;opacity:var(--grain-opacity);mix-blend-mode:multiply;
+/* architecture #33 : spacer long, tout le visible en fixed, une tete de lecture */
+#spacer{position:relative;height:calc(100vh + 5400px)}
+.stage{position:relative;height:100vh;min-height:600px;overflow:hidden;background:var(--bg)}
+.plate{position:absolute;inset:0;z-index:1;overflow:hidden}
+.plate img,.plate canvas{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
+.grain{position:absolute;inset:0;z-index:52;pointer-events:none;opacity:var(--grain-opacity);mix-blend-mode:overlay;
   background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='140' height='140'><filter id='g'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2'/></filter><rect width='140' height='140' filter='url(%23g)'/></svg>")}
+.vign{position:absolute;inset:0;z-index:51;pointer-events:none;
+  background:radial-gradient(ellipse at 50% 44%, rgba(10,10,10,0) 30%, rgba(10,10,10,0.72) 100%)}
 
-/* ---------- 01 · le hero fixe, ivoire ---------- */
-.hero{position:absolute;inset:0;z-index:1;display:flex;align-items:flex-end;
-  padding:0 clamp(18px,4vw,52px) clamp(64px,11vh,140px);background:var(--text);will-change:transform}
-.hero h1{font-family:var(--font-display);font-size:var(--step-hero);font-weight:900;line-height:0.88;
-  letter-spacing:-0.04em;max-width:15ch}
-.hero h1 em{font-family:var(--font-edito);font-style:italic;font-weight:400}
-.hero .sub{margin-top:1.1em;max-width:46ch;color:var(--surface);font-size:var(--step-body)}
-.rule-v{position:absolute;left:clamp(18px,4vw,52px);top:0;width:1px;height:100%;background:var(--line)}
+/* la typographie vit AU-DESSUS des plans, et passe devant ou derriere le sujet */
+.blk{position:absolute;z-index:20;will-change:transform}
+.blk h1{font-family:var(--font-display);font-size:var(--step-hero);font-weight:900;line-height:0.88;
+  letter-spacing:-0.04em;text-wrap:balance}
+.blk h2{font-family:var(--font-display);font-size:var(--step-h2);font-weight:900;line-height:0.94;
+  letter-spacing:-0.03em;text-wrap:balance}
+.blk em{font-family:var(--font-edito);font-style:italic;font-weight:400}
+.blk p{margin-top:1em;max-width:38ch;color:var(--line);font-size:var(--step-body)}
+#b1{left:clamp(18px,4vw,52px);bottom:12vh;width:min(56vw,760px)}
+#b2{right:clamp(18px,4vw,52px);top:18vh;width:min(40vw,520px);text-align:right}
+#b2 p{margin-left:auto}
+#b3{left:clamp(18px,4vw,52px);top:16vh;width:min(44vw,600px)}
+#b4{left:clamp(18px,4vw,52px);bottom:14vh;width:min(50vw,660px)}
+/* z-index 15 : la typo passe DERRIERE le sujet du plan 01, le noir natif le permet */
+#b1 .behind{position:absolute;z-index:0}
 
-/* ---------- 02 · le manifeste, composition #96 ---------- */
-.panel{position:absolute;inset:0;z-index:2;background:var(--bg);color:var(--text);overflow:hidden;will-change:transform}
-.wrap{max-width:1200px;margin:0 auto;height:100%;display:flex;flex-direction:column;
-  padding:clamp(70px,10vh,116px) clamp(18px,4vw,52px) clamp(20px,3.5vh,44px)}
-.hd{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:1.2em 2em}
-.badge{display:inline-block;border:1px solid var(--line);padding:0.38em 0.85em;border-radius:var(--r-0);
-  font-family:var(--font-mono);font-size:var(--step-label);letter-spacing:0.14em;text-transform:uppercase;color:var(--line)}
-.hd h2{font-family:var(--font-display);font-size:var(--step-h2);font-weight:900;line-height:0.94;
-  letter-spacing:-0.03em;margin-top:0.45em;max-width:14ch}
-.hd .side{max-width:46ch;color:var(--muted);font-size:var(--step-small)}
-.feat{margin-top:clamp(16px,2.6vh,34px);flex:1 1 auto;display:grid;grid-template-columns:1fr 1fr;
-  border:1px solid var(--line);min-height:0}
-.feat .media{position:relative;border-right:1px solid var(--line);min-height:0}
-#route{position:absolute;inset:0;width:100%;height:100%;display:block}
-.feat .body{padding:clamp(16px,2.6vh,38px);display:flex;flex-direction:column;min-height:0}
-.pill{align-self:flex-start;background:var(--signal);color:var(--text);padding:0.32em 0.75em;
-  border-radius:var(--r-0);font-family:var(--font-mono);font-size:var(--step-label);letter-spacing:0.12em;text-transform:uppercase}
-.feat h3{margin-top:0.75em;font-family:var(--font-display);font-size:var(--step-h3);font-weight:900;
-  letter-spacing:-0.02em;line-height:1.05}
-.feat p{margin-top:0.6em;color:var(--muted);font-size:var(--step-small);max-width:42ch}
-.feat .end{margin-top:auto;padding-top:0.9em;border-top:1px solid var(--line);display:flex;
-  justify-content:space-between;gap:1em;font-family:var(--font-mono);font-size:var(--step-label);
-  letter-spacing:0.1em;text-transform:uppercase;color:var(--line)}
+/* 03 · le journal de vol, grille 4 colonnes de #100 */
+.log{position:absolute;z-index:22;right:clamp(18px,4vw,52px);top:16vh;width:min(46vw,620px);
+  display:grid;grid-template-columns:auto auto 1fr;gap:0.8em clamp(10px,1.6vw,22px);align-items:baseline;
+  will-change:transform}
+.log .yr{font-family:var(--font-mono);font-weight:700;font-size:var(--step-small);color:var(--signal)}
+.log .sep{font-family:var(--font-mono);color:var(--muted)}
+.log .what{font-size:var(--step-small);color:var(--line)}
 
-/* ---------- 03 · le journal de vol, grille 4 colonnes de #100 ---------- */
-.log{position:absolute;inset:0;z-index:3;background:var(--bg);color:var(--text);will-change:transform;
-  padding:clamp(70px,10vh,116px) clamp(18px,4vw,52px) clamp(20px,3.5vh,44px);overflow:hidden}
-.log .inner{max-width:1200px;margin:0 auto;height:100%;display:flex;flex-direction:column}
-.log h2{font-family:var(--font-display);font-size:var(--step-h2);font-weight:900;line-height:0.94;letter-spacing:-0.03em}
-.tline{margin-top:clamp(14px,2.6vh,34px);display:grid;grid-template-columns:auto auto 1fr auto;
-  gap:0.8em clamp(12px,1.8vw,26px);align-items:baseline;overflow:auto}
-.tline .yr{font-family:var(--font-mono);font-weight:700;font-size:var(--step-body);color:var(--signal)}
-.tline .sep{font-family:var(--font-mono);color:var(--muted)}
-.tline .what{font-size:var(--step-body)}
-.tline .num{font-family:var(--font-mono);font-size:var(--step-small);color:var(--muted);white-space:nowrap}
-
-/* ---------- 04 · l escalier de piliers, #108 ---------- */
-.stair{position:absolute;inset:0;z-index:4;background:var(--text);color:var(--bg);will-change:transform;
-  padding:clamp(70px,10vh,116px) clamp(18px,4vw,52px) clamp(20px,3.5vh,44px);overflow:hidden}
-.stair .inner{max-width:1200px;margin:0 auto;height:100%;display:flex;flex-direction:column}
-.stair h2{font-family:var(--font-display);font-size:var(--step-h2);font-weight:900;line-height:0.94;
-  letter-spacing:-0.03em;max-width:13ch}
-.pillars{margin-top:auto;display:grid;grid-template-columns:repeat(6,1fr);gap:clamp(8px,1.2vw,20px);align-items:end}
-.pil{border-top:1px solid var(--bg);padding-top:0.75em;display:flex;flex-direction:column;gap:0.3em}
-.pil b{font-family:var(--font-mono);font-weight:700;font-size:var(--step-h3);letter-spacing:-0.02em;line-height:1}
-.pil span{font-family:var(--font-mono);font-size:var(--step-label);letter-spacing:0.1em;text-transform:uppercase;color:var(--surface)}
-.pil:nth-child(2){margin-bottom:3vh} .pil:nth-child(3){margin-bottom:6vh}
-.pil:nth-child(4){margin-bottom:9vh} .pil:nth-child(5){margin-bottom:12vh} .pil:nth-child(6){margin-bottom:15vh}
-
-/* ---------- 05 · le sélecteur de route, mécanique de #137 ---------- */
-.picker{position:absolute;inset:0;z-index:5;background:var(--bg);color:var(--text);will-change:transform;overflow:hidden;
-  display:flex;flex-direction:column;padding:clamp(70px,10vh,116px) clamp(18px,4vw,52px) clamp(16px,3vh,32px)}
-.picker .top{max-width:1200px;margin:0 auto;width:100%}
-.picker h2{font-family:var(--font-display);font-size:var(--step-h3);font-weight:900;letter-spacing:-0.02em}
-.picker .top p{margin-top:0.45em;color:var(--muted);font-size:var(--step-small);max-width:52ch}
-.stack{position:relative;flex:1 1 auto;min-height:0;margin:clamp(12px,2vh,26px) auto;max-width:1200px;width:100%;
-  border:1px solid var(--line);display:flex;align-items:center;justify-content:center}
-.big{font-family:var(--font-mono);font-weight:700;font-size:var(--step-hero);line-height:0.9;letter-spacing:-0.04em;text-align:center}
-.big u{display:block;font-size:var(--step-label);text-decoration:none;color:var(--muted);letter-spacing:0.16em;
-  text-transform:uppercase;margin-top:0.8em}
-.stack .lbl{position:absolute;top:clamp(10px,2vh,22px);left:clamp(12px,2vw,26px);font-family:var(--font-mono);
-  font-size:var(--step-label);letter-spacing:0.14em;text-transform:uppercase;color:var(--muted)}
-.meta{position:absolute;bottom:clamp(10px,2vh,22px);left:clamp(12px,2vw,26px);right:clamp(12px,2vw,26px);
-  display:flex;flex-wrap:wrap;gap:0.5em clamp(12px,2.4vw,40px);font-family:var(--font-mono);
-  font-size:var(--step-small);color:var(--muted)}
+/* 05 · le selecteur de route, mecanique de #137 */
+.picker{position:absolute;z-index:24;inset:auto clamp(18px,4vw,52px) clamp(18px,3vh,34px);
+  will-change:transform}
+.picker .big{font-family:var(--font-mono);font-weight:700;font-size:var(--step-hero);line-height:0.9;
+  letter-spacing:-0.04em}
+.picker .big u{display:block;font-size:var(--step-label);text-decoration:none;color:var(--muted);
+  letter-spacing:0.16em;text-transform:uppercase;margin-top:0.6em}
+.meta{margin-top:1em;display:flex;flex-wrap:wrap;gap:0.5em clamp(12px,2.4vw,40px);
+  font-family:var(--font-mono);font-size:var(--step-small);color:var(--muted)}
 .meta b{color:var(--text);font-weight:700}
 .meta b.ok{color:var(--signal)}
-.rail{max-width:1200px;margin:0 auto;width:100%;display:flex;gap:clamp(6px,0.8vw,12px);overflow-x:auto;padding-bottom:0.3em}
+.rail{margin-top:1.2em;display:flex;gap:clamp(6px,0.8vw,12px);overflow-x:auto;padding-bottom:0.3em}
 .rail button{flex:0 0 auto;border:1px solid var(--line);background:transparent;color:var(--line);
-  border-radius:var(--r-0);padding:0.7em 1em;font-family:var(--font-mono);font-size:var(--step-label);
+  border-radius:var(--r-0);padding:0.65em 0.95em;font-family:var(--font-mono);font-size:var(--step-label);
   letter-spacing:0.1em;text-transform:uppercase;cursor:pointer;
   transition:background var(--t-fast) var(--ease), color var(--t-fast) var(--ease)}
 .rail button[aria-pressed="true"]{background:var(--text);color:var(--bg)}
 :focus-visible{outline:2px solid var(--signal);outline-offset:3px}
 
-/* ---------- 06 · le pied, #88 ---------- */
-.foot{position:absolute;inset:0;z-index:6;background:var(--text);color:var(--bg);will-change:transform;overflow:hidden;
+/* 06 · le registre */
+.ledger{position:absolute;z-index:26;inset:0;background:var(--bg);will-change:transform;overflow:hidden;
   display:flex;flex-direction:column;justify-content:space-between;
-  padding:clamp(70px,10vh,116px) clamp(18px,4vw,52px) clamp(16px,3vh,32px)}
-.foot .cols{max-width:1200px;margin:0 auto;width:100%;display:flex;flex-wrap:wrap;gap:clamp(14px,2vw,40px);
-  border-top:1px solid var(--surface);padding-top:clamp(12px,2.2vh,26px)}
-.foot .cols > div{flex:1 1 clamp(140px,16vw,220px)}
-.foot h3{font-family:var(--font-mono);font-size:var(--step-label);letter-spacing:0.14em;text-transform:uppercase;color:var(--surface)}
-.foot ul{list-style:none;margin-top:0.55em}
-.foot li{font-size:var(--step-small);line-height:1.8}
-.foot a{color:var(--bg);text-decoration:none;border-bottom:1px solid transparent;transition:border-color var(--t-fast) var(--ease)}
-.foot a:hover{border-bottom-color:var(--surface)}
-.foot .mark{max-width:1200px;margin:0 auto;width:100%}
-.foot .mark p{font-family:var(--font-display);font-weight:900;font-size:var(--step-hero);line-height:0.82;
+  padding:clamp(72px,10vh,116px) clamp(18px,4vw,52px) clamp(18px,3vh,32px)}
+.ledger .cols{display:flex;flex-wrap:wrap;gap:clamp(14px,2vw,40px);border-top:1px solid var(--surface);
+  padding-top:clamp(12px,2.2vh,26px)}
+.ledger .cols > div{flex:1 1 clamp(140px,16vw,220px)}
+.ledger h3{font-family:var(--font-mono);font-size:var(--step-label);letter-spacing:0.14em;
+  text-transform:uppercase;color:var(--muted)}
+.ledger ul{list-style:none;margin-top:0.55em}
+.ledger li{font-size:var(--step-small);line-height:1.8}
+.ledger a{color:var(--text);text-decoration:none;border-bottom:1px solid transparent;
+  transition:border-color var(--t-fast) var(--ease)}
+.ledger a:hover{border-bottom-color:var(--surface)}
+.ledger .mark p{font-family:var(--font-display);font-weight:900;font-size:var(--step-hero);line-height:0.82;
   letter-spacing:-0.05em}
-.foot .legal{max-width:70ch;margin:0 auto;width:100%;font-family:var(--font-mono);font-size:var(--step-label);
-  letter-spacing:0.06em;color:var(--surface);line-height:1.7}
+.ledger .legal{font-family:var(--font-mono);font-size:var(--step-label);letter-spacing:0.06em;
+  color:var(--muted);max-width:70ch;line-height:1.7}
 
 @media (max-width:900px){
-  .hud .br{display:none}
-  .feat{grid-template-columns:1fr}
-  .feat .media{border-right:0;border-bottom:1px solid var(--line);min-height:20vh}
-  .pillars{grid-template-columns:repeat(2,1fr);gap:1.1em}
-  .pil{margin-bottom:0}
-  .tline{grid-template-columns:auto auto 1fr}
-  .tline .num{grid-column:3}
+  .hud .tr{display:none}
+  #b1,#b3,#b4{width:min(86vw,560px)}
+  #b2{width:min(80vw,440px)}
+  .log{right:auto;left:clamp(18px,4vw,52px);width:min(86vw,560px);grid-template-columns:auto auto 1fr}
 }
 @media (prefers-reduced-motion:reduce){ *{transition:none} }
 </style>
@@ -256,83 +211,46 @@ button{font:inherit;color:inherit}
     <span class="cap">Global 8000 · Mach 0.95 · 8,000 nm</span>
   </div>
   <span class="tr">Concept redesign</span>
-  <span class="br">Every figure here is published by Bombardier.</span>
 </div>
 
 <section id="spacer" aria-label="One flight">
-  <div class="fixed-layer">
+  <div class="stage" id="stage">
 
-    <div class="hero" id="hero">
-      <span class="rule-v" aria-hidden="true"></span>
-      <div>
-        <h1>You buy the day <em>back</em>.</h1>
-        <p class="sub">Nobody buys the jet. Bombardier's own homepage carries two empty H1 tags and a title that says “Welcome”, on 34 megabytes of video. Here is what it could have said.</p>
-      </div>
+    <div class="plate" id="pl1"><img src="img/p1-nez.webp" alt="" /></div>
+    <div class="plate" id="pl2"><img src="img/p2-winglet.webp" alt="" /></div>
+    <div class="plate" id="pl3"><img src="img/p3-hublot.webp" alt="" /></div>
+    <div class="plate" id="pl4"><canvas id="seq" aria-hidden="true"></canvas></div>
+
+    <article class="blk" id="b1">
+      <h1>You buy the day <em>back</em>.</h1>
+      <p>Nobody buys the jet.</p>
+    </article>
+
+    <article class="blk" id="b2">
+      <h2>Fifty-one thousand <em>feet</em>.</h2>
+      <p>Above the weather, above the traffic, above the airways everyone else is queuing in.</p>
+    </article>
+
+    <div class="log" id="b3">
+      <span class="yr">8,000 nm</span><span class="sep">·</span><span class="what">Range, without landing. 14,816 km.</span>
+      <span class="yr">Mach 0.95</span><span class="sep">·</span><span class="what">Top speed. The world's fastest private jet, in their words.</span>
+      <span class="yr">+30%</span><span class="sep">·</span><span class="what">More airports than its closest competitor. Two thousand more locations.</span>
+      <span class="yr">5,760 ft</span><span class="sep">·</span><span class="what">Take-off distance. Shorter runways mean closer airports.</span>
+      <span class="yr">4,000</span><span class="sep">·</span><span class="what">Experts on the support network, 24/7/365.</span>
     </div>
 
-    <div class="panel" id="panel">
-      <div class="wrap">
-        <div class="hd">
-          <div>
-            <span class="badge">The claim</span>
-            <h2>They already wrote the argument.</h2>
-          </div>
-          <p class="side">On that same homepage: “the world's fastest private jet”, and a Global 8000 that masters thirty percent more airports, two thousand more locations, than its closest competitor. Those are not moods. They are numbers.</p>
-        </div>
-        <div class="feat">
-          <div class="media"><canvas id="route" aria-hidden="true"></canvas></div>
-          <div class="body">
-            <span class="pill">Non-stop</span>
-            <h3>Montréal to Dubai, without landing.</h3>
-            <p>Five thousand seven hundred and thirty four nautical miles on one tank, at a top speed no other business jet reaches. The aircraft does not stop, so the page does not stop either.</p>
-            <div class="end"><span>Great-circle track</span><span>YUL → DXB</span></div>
-          </div>
-        </div>
-      </div>
-    </div>
+    <article class="blk" id="b4">
+      <h2>Chase the <em>dawn</em>.</h2>
+      <p>Their own campaign line. They wrote it and never built it.</p>
+    </article>
 
-    <div class="log" id="log">
-      <div class="inner">
-        <h2>The flight log.</h2>
-        <div class="tline">
-          <span class="yr">8,000 nm</span><span class="sep">·</span><span class="what">Range of the Global 8000, without landing</span><span class="num">14,816 km</span>
-          <span class="yr">Mach 0.95</span><span class="sep">·</span><span class="what">Top speed. The world's fastest private jet, in their words</span><span class="num">544 kt at FL510</span>
-          <span class="yr">+30%</span><span class="sep">·</span><span class="what">More airports than its closest competitor can master</span><span class="num">2,000 more locations</span>
-          <span class="yr">4 spaces</span><span class="sep">·</span><span class="what">Four equal-size living spaces, up to 19 passengers</span><span class="num">cabin 54 ft 5 in</span>
-          <span class="yr">5,760 ft</span><span class="sep">·</span><span class="what">Take-off distance. Shorter runways mean closer airports</span><span class="num">1,756 m</span>
-          <span class="yr">4,000</span><span class="sep">·</span><span class="what">Experts on the worldwide support network</span><span class="num">24/7/365</span>
-        </div>
-      </div>
-    </div>
-
-    <div class="stair" id="stair">
-      <div class="inner">
-        <h2>What their homepage says instead.</h2>
-        <div class="pillars">
-          <div class="pil"><b>34 Mo</b><span>page weight</span></div>
-          <div class="pil"><b>30 Mo</b><span>of it video</span></div>
-          <div class="pil"><b>2</b><span>H1 tags</span></div>
-          <div class="pil"><b>0</b><span>words inside them</span></div>
-          <div class="pil"><b>11.6</b><span>screens tall</span></div>
-          <div class="pil"><b>Welcome</b><span>the title tag</span></div>
-        </div>
-      </div>
-    </div>
-
-    <div class="picker" id="picker" data-outil aria-label="Route selector">
-      <div class="top">
-        <h2>Pick a route. Read what the stop costs you.</h2>
-        <p>Great-circle distance by haversine, non-stop verdict against the published 8,000 nm range, block time at typical cruise and at top speed.</p>
-      </div>
-      <div class="stack">
-        <span class="lbl" id="rLbl">YUL → DXB</span>
-        <div class="big"><span id="rMin">74</span><u>minutes given back</u></div>
-        <div class="meta" id="rMeta"></div>
-      </div>
+    <section class="picker" id="picker" data-outil aria-label="Route selector">
+      <div class="big"><span id="rMin">74</span><u>minutes given back</u></div>
+      <div class="meta" id="rMeta"></div>
       <div class="rail" id="rail"></div>
-    </div>
+    </section>
 
-    <div class="foot" id="foot">
+    <section class="ledger" id="ledger" aria-label="The record">
       <div class="cols">
         <div><h3>Aircraft</h3><ul>
           <li><a href="https://bombardier.com/en/aircraft/global-8000">Global 8000</a></li>
@@ -344,13 +262,13 @@ button{font:inherit;color:inherit}
         <div><h3>Support</h3><ul>
           <li><a href="https://bombardier.com/en">OEM advantage</a></li>
           <li><a href="https://bombardier.com/en">Service centres</a></li></ul></div>
-        <div><h3>Company</h3><ul>
-          <li>Dorval, Québec</li><li>TSX: BBD</li></ul></div>
+        <div><h3>Company</h3><ul><li>Dorval, Québec</li><li>TSX: BBD</li></ul></div>
       </div>
       <div class="mark"><p>Chase the dawn.</p></div>
       <p class="legal">Unsolicited concept redesign, not affiliated with or endorsed by Bombardier Inc. Every figure and quotation is taken from bombardier.com. Concept and build: Dondi Santeme, Groupe SD.</p>
-    </div>
+    </section>
 
+    <div class="vign" aria-hidden="true"></div>
     <div class="grain" aria-hidden="true"></div>
   </div>
 </section>
@@ -361,26 +279,15 @@ button{font:inherit;color:inherit}
 <script>
 (function(){
 "use strict";
-const REDUCED = matchMedia('(prefers-reduced-motion: reduce)').matches;
+const REDUCED=matchMedia('(prefers-reduced-motion: reduce)').matches;
 const seg=(p,a,b)=>Math.max(0,Math.min(1,(p-a)/(b-a)));
 const lerp=(a,b,t)=>a+(b-a)*t;
-const css=getComputedStyle(document.documentElement);
-const TOK={ text:css.getPropertyValue('--text').trim()||'#F5F4F0',
-  bg:css.getPropertyValue('--bg').trim()||'#0A0A0A',
-  line:css.getPropertyValue('--line').trim()||'#D3D1C7',
-  muted:css.getPropertyValue('--muted').trim()||'#888780',
-  accent:css.getPropertyValue('--accent').trim()||'#002C7B',
-  signal:css.getPropertyValue('--signal').trim()||'#E11C16' };
-const hex2rgb=h=>{h=h.replace('#','');if(h.length===3)h=h[0]+h[0]+h[1]+h[1]+h[2]+h[2];
-  return [parseInt(h.slice(0,2),16),parseInt(h.slice(2,4),16),parseInt(h.slice(4,6),16)];};
-const rgba=(hex,a)=>{const c=hex2rgb(hex);return 'rgba('+c[0]+','+c[1]+','+c[2]+','+a+')';};
 
 /* ---------- chiffres publies par Bombardier ---------- */
 const RANGE_NM=8000, A_KT=573, M_CRUISE=0.85, M_TOP=0.95;
 const C={ YUL:['Montréal',45.47,-73.74], DXB:['Dubai',25.25,55.36], SIN:['Singapore',1.36,103.99],
-  NRT:['Tokyo',35.76,140.39], LHR:['London',51.47,-0.45], LAX:['Los Angeles',33.94,-118.41],
-  GRU:['São Paulo',-23.43,-46.47], SYD:['Sydney',-33.94,151.18] };
-const ROUTES=[['YUL','DXB'],['YUL','SIN'],['YUL','NRT'],['YUL','LHR'],['LHR','SYD'],['LAX','GRU']];
+  NRT:['Tokyo',35.76,140.39], LHR:['London',51.47,-0.45], SYD:['Sydney',-33.94,151.18] };
+const ROUTES=[['YUL','DXB'],['YUL','SIN'],['YUL','NRT'],['YUL','LHR'],['LHR','SYD']];
 const rad=d=>d*Math.PI/180;
 function nmBetween(a,b){ const R=3440.065;
   const dLat=rad(b[1]-a[1]), dLon=rad(b[2]-a[2]);
@@ -388,80 +295,66 @@ function nmBetween(a,b){ const R=3440.065;
   return 2*R*Math.asin(Math.min(1,Math.sqrt(s))); }
 const hhmm=h=>{const t=Math.round(h*60);return Math.floor(t/60)+' h '+String(t%60).padStart(2,'0');};
 let active=0;
-function routeData(i){
-  const [fa,ta]=ROUTES[i], a=C[fa], b=C[ta];
+function routeData(i){ const [fa,ta]=ROUTES[i], a=C[fa], b=C[ta];
   const nm=nmBetween(a,b), tC=nm/(A_KT*M_CRUISE), tT=nm/(A_KT*M_TOP);
-  return { fa,ta,nm,tC,tT, gain:Math.round((tC-tT)*60), stop:nm<=RANGE_NM };
-}
-
-/* ---------- le tracé de route, seul canvas du site ---------- */
-const rc=document.getElementById('route'), rx=rc.getContext('2d');
-function drawRoute(){
-  const r=rc.getBoundingClientRect(); if(r.width<2||r.height<2) return;
-  const dpr=Math.min(window.devicePixelRatio||1,2);
-  rc.width=Math.round(r.width*dpr); rc.height=Math.round(r.height*dpr);
-  rx.setTransform(dpr,0,0,dpr,0,0);
-  const w=r.width,h=r.height,d=routeData(active);
-  rx.clearRect(0,0,w,h); rx.fillStyle=TOK.bg; rx.fillRect(0,0,w,h);
-  rx.lineWidth=1;
-  rx.strokeStyle=rgba(TOK.line,0.34);
-  rx.beginPath(); rx.arc(w/2,h*1.55,h*1.25,Math.PI*1.18,Math.PI*1.82); rx.stroke();
-  rx.strokeStyle=rgba(TOK.line,0.11);
-  for(let i=1;i<=4;i++){ rx.beginPath(); rx.arc(w/2,h*1.55,h*(1.25+i*0.10),Math.PI*1.2,Math.PI*1.8); rx.stroke(); }
-  const x0=w*0.16,x1=w*0.84,yb=h*0.60;
-  rx.strokeStyle=rgba(TOK.accent,0.95); rx.lineWidth=2;
-  rx.beginPath();
-  for(let i=0;i<=60;i++){ const k=i/60,x=x0+(x1-x0)*k,y=yb-Math.sin(k*Math.PI)*h*0.28;
-    i?rx.lineTo(x,y):rx.moveTo(x,y); }
-  rx.stroke(); rx.lineWidth=1;
-  rx.fillStyle=TOK.signal;
-  [[x0,yb],[x1,yb]].forEach(function(pt){ rx.beginPath(); rx.arc(pt[0],pt[1],3.4,0,7); rx.fill(); });
-  rx.fillStyle=rgba(TOK.line,0.92); rx.font='700 11px "Space Mono", monospace';
-  rx.textAlign='left';  rx.fillText(d.fa, x0-2, yb+20);
-  rx.textAlign='right'; rx.fillText(d.ta, x1+2, yb+20);
-  rx.textAlign='left';
-  rx.fillStyle=rgba(TOK.muted,0.9); rx.font='400 10px "Space Mono", monospace';
-  rx.fillText(Math.round(d.nm).toLocaleString('en-US')+' nm', x0-2, yb+38);
-}
-
-/* ---------- le sélecteur, mécanique de #137 ---------- */
+  return { fa,ta,nm,tC,tT, gain:Math.round((tC-tT)*60), stop:nm<=RANGE_NM }; }
 const rail=document.getElementById('rail');
-ROUTES.forEach(function(r,i){
-  const b=document.createElement('button'); b.type='button';
+ROUTES.forEach(function(r,i){ const b=document.createElement('button'); b.type='button';
   b.textContent=r[0]+' → '+r[1]; b.setAttribute('aria-pressed', i===0?'true':'false');
-  b.addEventListener('click',function(){ active=i; paint(); });
-  rail.appendChild(b);
-});
-function paint(){
-  const d=routeData(active);
-  document.getElementById('rLbl').textContent=d.fa+' → '+d.ta;
+  b.addEventListener('click',function(){ active=i; paint(); }); rail.appendChild(b); });
+function paint(){ const d=routeData(active);
   document.getElementById('rMin').textContent=d.gain;
   document.getElementById('rMeta').innerHTML =
+    '<span>'+d.fa+' → '+d.ta+'</span>'+
     '<span>Great-circle <b>'+Math.round(d.nm).toLocaleString('en-US')+' nm</b></span>'+
     '<span>Non-stop <b class="'+(d.stop?'ok':'')+'">'+(d.stop?'yes':'no')+'</b></span>'+
-    '<span>Mach 0.85 <b>'+hhmm(d.tC)+'</b></span>'+
-    '<span>Mach 0.95 <b>'+hhmm(d.tT)+'</b></span>';
-  const bs=rail.children;
-  for(let i=0;i<bs.length;i++) bs[i].setAttribute('aria-pressed', i===active?'true':'false');
-  drawRoute();
-}
+    '<span>M0.85 <b>'+hhmm(d.tC)+'</b></span><span>M0.95 <b>'+hhmm(d.tT)+'</b></span>';
+  const bs=rail.children; for(let i=0;i<bs.length;i++) bs[i].setAttribute('aria-pressed', i===active?'true':'false'); }
 
-/* ---------- le film : #33, une seule tête de lecture ---------- */
-const hero=document.getElementById('hero'), panel=document.getElementById('panel'),
-      log=document.getElementById('log'), stair=document.getElementById('stair'),
-      picker=document.getElementById('picker'), foot=document.getElementById('foot'),
-      hud=document.getElementById('hud');
-const put=(el,y)=>{ el.style.transform='translate3d(0,'+y.toFixed(2)+'vh,0)'; };
+/* ---------- p4-aube : sequence WebP scrubbee, jamais un mp4 ---------- */
+const FR=70, DIR = innerWidth<760 ? 'img/p4-aube-720/' : 'img/p4-aube/';
+const imgs=[]; let ready=0;
+for(let i=1;i<=FR;i++){ const im=new Image();
+  im.onload=function(){ ready++; if(ready===1) drawSeq(0); };
+  im.src=DIR+String(i).padStart(3,'0')+'.webp'; imgs.push(im); }
+const cv=document.getElementById('seq'), cx=cv.getContext('2d');
+function sizeSeq(){ const r=cv.getBoundingClientRect(); const dpr=Math.min(devicePixelRatio||1,2);
+  cv.width=Math.round(r.width*dpr); cv.height=Math.round(r.height*dpr); cx.setTransform(dpr,0,0,dpr,0,0); }
+function drawSeq(k){ const im=imgs[Math.max(0,Math.min(FR-1,Math.round(k*(FR-1))))];
+  if(!im||!im.complete||!im.naturalWidth) return;
+  const r=cv.getBoundingClientRect(), w=r.width, h=r.height;
+  const s=Math.max(w/im.naturalWidth, h/im.naturalHeight);
+  const dw=im.naturalWidth*s, dh=im.naturalHeight*s;
+  cx.clearRect(0,0,w,h); cx.drawImage(im,(w-dw)/2,(h-dh)/2,dw,dh); }
+
+/* ---------- le film : une seule tete de lecture ---------- */
+const pl=[1,2,3,4].map(i=>document.getElementById('pl'+i));
+const b1=document.getElementById('b1'), b2=document.getElementById('b2'),
+      b3=document.getElementById('b3'), b4=document.getElementById('b4'),
+      picker=document.getElementById('picker'), ledger=document.getElementById('ledger');
+const put=(el,x,y)=>{ el.style.transform='translate3d('+x+','+y+',0)'; };
 function render(p){
-  /* Chaque plan RECOUVRE le precedent, geometriquement. Aucun fondu, aucune opacite. */
-  put(hero,  lerp(0,-24,seg(p,0.10,0.24)));
-  put(panel, lerp(102,0,seg(p,0.10,0.24)) + lerp(0,-24,seg(p,0.30,0.44)));
-  put(log,   lerp(102,0,seg(p,0.30,0.44)) + lerp(0,-24,seg(p,0.48,0.60)));
-  put(stair, lerp(102,0,seg(p,0.48,0.60)) + lerp(0,-24,seg(p,0.64,0.76)));
-  put(picker,lerp(102,0,seg(p,0.64,0.76)) + lerp(0,-24,seg(p,0.88,0.96)));
-  put(foot,  lerp(102,0,seg(p,0.88,0.96)));
-  const sombre = (p>0.18&&p<0.55) || (p>0.71&&p<0.93);
-  hud.classList.toggle('onink', sombre);
+  /* R5 · plongee macro dans l arete : le plan 01 grandit, le plan 02 prend sa place */
+  pl[0].style.transform='scale('+lerp(1,1.35,seg(p,0.12,0.26)).toFixed(3)+')';
+  pl[0].style.clipPath='inset(0 0 '+(seg(p,0.20,0.28)*100).toFixed(1)+'% 0)';
+  /* R2 · le winglet franchit la frontiere */
+  /* le plan winglet est presque entierement noir : hors cadre tant que son chapitre
+     n a pas commence, sinon il recouvre le nez et l ecran parait vide. */
+  pl[1].style.transform='translate3d(0,'+(lerp(104,0,seg(p,0.22,0.30))+lerp(0,-118,seg(p,0.34,0.44))).toFixed(1)+'vh,0) scale('+lerp(1.06,1,seg(p,0.22,0.34)).toFixed(3)+')';
+  /* le hublot tient le chapitre 03 */
+  pl[2].style.transform='translate3d(0,'+lerp(100,0,seg(p,0.34,0.44)).toFixed(1)+'vh,0)';
+  pl[2].style.clipPath='inset(0 0 '+(seg(p,0.50,0.58)*100).toFixed(1)+'% 0)';
+  /* R6 · metamorphose : cadrage verrouille, seule la lumiere voyage */
+  pl[3].style.transform='translate3d(0,'+lerp(100,0,seg(p,0.50,0.58)).toFixed(1)+'vh,0)';
+  drawSeq(seg(p,0.52,0.70));
+
+  put(b1,'0', lerp(0,124,seg(p,0.10,0.18))+'vh');
+  put(b2,'0', (lerp(-124,0,seg(p,0.17,0.23))+lerp(0,-124,seg(p,0.28,0.34)))+'vh');
+  put(b3,'0', (lerp(124,0,seg(p,0.36,0.42))+lerp(0,-124,seg(p,0.48,0.54)))+'vh');
+  put(b4,'0', (lerp(124,0,seg(p,0.56,0.62))+lerp(0,-124,seg(p,0.66,0.72)))+'vh');
+  /* R3 · recouvrement */
+  put(picker, lerp(118,0,seg(p,0.72,0.78))+'vw', lerp(0,-140,seg(p,0.94,0.98))+'vh');
+  put(ledger,'0', lerp(100,0,seg(p,0.88,0.94))+'vh');
 }
 let lenis=null;
 gsap.registerPlugin(ScrollTrigger);
@@ -473,14 +366,13 @@ window.captureMode=function(){ if(lenis&&lenis.destroy){lenis.destroy();lenis=nu
 
 const FRAMES=1000, playhead={f:0};
 const film=gsap.timeline({ scrollTrigger:{ trigger:'#spacer', start:'top top', end:'bottom bottom',
-  scrub:true, pin:'.fixed-layer', anticipatePin:1 }, defaults:{ease:'none'} });
+  scrub:true, pin:'.stage', anticipatePin:1 }, defaults:{ease:'none'} });
 film.to(playhead,{ f:FRAMES-1, duration:1, onUpdate:function(){ render(playhead.f/(FRAMES-1)); } },0);
-film.addLabel('ch1',0).addLabel('ch2',0.10).addLabel('ch3',0.30)
-    .addLabel('ch4',0.48).addLabel('ch5',0.64).addLabel('ch6',0.88);
+film.addLabel('ch1',0).addLabel('ch2',0.16).addLabel('ch3',0.34)
+    .addLabel('ch4',0.52).addLabel('ch5',0.70).addLabel('ch6',0.88);
 
-window.addEventListener('resize',function(){ drawRoute(); ScrollTrigger.refresh(); });
-if(document.fonts&&document.fonts.ready) document.fonts.ready.then(drawRoute);
-paint(); render(0);
+window.addEventListener('resize',function(){ sizeSeq(); drawSeq(0); ScrollTrigger.refresh(); });
+sizeSeq(); paint(); render(0);
 })();
 </script>
 </body>
