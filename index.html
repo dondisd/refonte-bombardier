@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Bombardier · Chase the dawn</title>
-<meta name="description" content="The world's fastest private jet, measured in the only unit that matters: hours. Pick two cities and see what the stop costs you." />
+<title>Bombardier · You buy the day back</title>
+<meta name="description" content="The world's fastest private jet, measured in the only unit that matters. Pick a route and read what the stop costs you." />
 <link rel="icon" href="data:," />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -29,128 +29,153 @@
   --shadow:0 24px 48px rgba(0,0,0,0.35);
   --grain-opacity:0.05;
 }
+/* LE CHAMP EST L IVOIRE, L ENCRE EST LE NOIR : memes tokens qu Otis, roles inverses. */
 *{box-sizing:border-box;margin:0;padding:0}
-html{background:var(--bg)}
-body{background:var(--bg);color:var(--text);font-family:var(--font-body);font-size:var(--step-body);
-  line-height:1.45;-webkit-font-smoothing:antialiased;overflow-x:clip}
-button,select{font:inherit;color:inherit}
+html{background:var(--text)}
+body{background:var(--text);color:var(--bg);font-family:var(--font-body);font-size:var(--step-body);
+  line-height:1.5;-webkit-font-smoothing:antialiased;overflow-x:clip}
+button{font:inherit;color:inherit}
 ::selection{background:var(--signal);color:var(--text)}
 
-.hud{position:fixed;inset:0 0 auto 0;z-index:40;display:flex;align-items:center;gap:24px;
-  padding:20px clamp(18px,4vw,52px);pointer-events:none}
-.hud a,.hud span{pointer-events:auto}
-.wm{display:block;width:clamp(90px,9vw,132px);height:auto;color:var(--text)}
-.hud .rule{flex:1 1 auto;height:1px;background:var(--line);opacity:0.18}
-.hud .meta{font-family:var(--font-mono);font-size:var(--step-label);letter-spacing:0.16em;
-  text-transform:uppercase;color:var(--muted);white-space:nowrap}
+/* ---------- HUD en coins, #33 PROMPT ---------- */
+.hud{position:fixed;inset:0;z-index:60;pointer-events:none}
+.hud > *{position:absolute;pointer-events:auto}
+.hud .tl{top:clamp(16px,2.4vh,26px);left:clamp(18px,4vw,52px);display:flex;flex-direction:column;gap:0.55em}
+.wm{display:block;width:clamp(84px,8vw,116px);height:auto;color:var(--bg)}
+.hud .cap{font-family:var(--font-mono);font-size:var(--step-label);letter-spacing:0.16em;
+  text-transform:uppercase;color:var(--surface)}
+.hud .tr{top:clamp(16px,2.4vh,26px);right:clamp(18px,4vw,52px);font-family:var(--font-mono);
+  font-size:var(--step-label);letter-spacing:0.16em;text-transform:uppercase;color:var(--surface)}
+.hud .br{bottom:clamp(16px,2.4vh,26px);right:clamp(18px,4vw,52px);text-align:right;
+  font-family:var(--font-mono);font-size:var(--step-label);letter-spacing:0.1em;color:var(--surface);max-width:32ch}
+.hud.onink .wm{color:var(--text)}
+.hud.onink .cap,.hud.onink .tr,.hud.onink .br{color:var(--line)}
 
-#film{position:relative;height:calc(100vh + 4400px)}
-#stage{position:relative;height:100vh;min-height:600px;overflow:hidden;isolation:isolate;background:var(--bg)}
-#plate{position:absolute;inset:0;width:100%;height:100%;display:block}
-.world{position:absolute;inset:0}
-.grain{position:absolute;inset:0;z-index:30;pointer-events:none;opacity:var(--grain-opacity);mix-blend-mode:overlay;
+/* ---------- architecture #33 : spacer long, tout le visible en fixed ---------- */
+#spacer{position:relative;height:calc(100vh + 5200px)}
+.fixed-layer{position:relative;height:100vh;overflow:hidden;background:var(--text)}
+.grain{position:absolute;inset:0;z-index:58;pointer-events:none;opacity:var(--grain-opacity);mix-blend-mode:multiply;
   background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='140' height='140'><filter id='g'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2'/></filter><rect width='140' height='140' filter='url(%23g)'/></svg>")}
-.vign{position:absolute;inset:0;z-index:29;pointer-events:none;
-  background:radial-gradient(ellipse at 50% 46%, rgba(10,10,10,0) 38%, rgba(10,10,10,0.8) 100%)}
 
-.blk{position:absolute;z-index:20;will-change:transform}
-.kick{display:block;margin-bottom:1.1em;font-family:var(--font-mono);font-size:var(--step-label);
-  letter-spacing:0.18em;text-transform:uppercase;color:var(--muted)}
-.blk h1{font-family:var(--font-display);font-size:var(--step-hero);font-weight:900;line-height:0.9;
-  letter-spacing:-0.035em;text-wrap:balance}
-.blk h2{font-family:var(--font-display);font-size:var(--step-h2);font-weight:900;line-height:0.94;
-  letter-spacing:-0.03em;text-wrap:balance}
-.blk p{margin-top:1.1em;max-width:36ch;color:var(--muted);font-size:var(--step-body)}
-.blk em{font-family:var(--font-edito);font-style:italic;font-weight:400;color:var(--text)}
-#b1{right:clamp(18px,4vw,52px);top:16vh;width:min(46vw,640px);text-align:right}
-#b1 p{margin-left:auto}
+/* ---------- 01 · le hero fixe, ivoire ---------- */
+.hero{position:absolute;inset:0;z-index:1;display:flex;align-items:flex-end;
+  padding:0 clamp(18px,4vw,52px) clamp(64px,11vh,140px);background:var(--text);will-change:transform}
+.hero h1{font-family:var(--font-display);font-size:var(--step-hero);font-weight:900;line-height:0.88;
+  letter-spacing:-0.04em;max-width:15ch}
+.hero h1 em{font-family:var(--font-edito);font-style:italic;font-weight:400}
+.hero .sub{margin-top:1.1em;max-width:46ch;color:var(--surface);font-size:var(--step-body)}
+.rule-v{position:absolute;left:clamp(18px,4vw,52px);top:0;width:1px;height:100%;background:var(--line)}
 
-#b2{right:clamp(18px,4vw,52px);top:20vh;width:min(38vw,520px);text-align:right}
-#b2 p{margin-left:auto}
-#b3{left:clamp(18px,4vw,52px);bottom:13vh;width:min(46vw,620px)}
-#b4{left:clamp(18px,4vw,52px);top:11vh;width:min(46vw,620px)}
-#b4 h2{font-size:var(--step-h3)}
+/* ---------- 02 · le manifeste, composition #96 ---------- */
+.panel{position:absolute;inset:0;z-index:2;background:var(--bg);color:var(--text);overflow:hidden;will-change:transform}
+.wrap{max-width:1200px;margin:0 auto;height:100%;display:flex;flex-direction:column;
+  padding:clamp(70px,10vh,116px) clamp(18px,4vw,52px) clamp(20px,3.5vh,44px)}
+.hd{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:1.2em 2em}
+.badge{display:inline-block;border:1px solid var(--line);padding:0.38em 0.85em;border-radius:var(--r-0);
+  font-family:var(--font-mono);font-size:var(--step-label);letter-spacing:0.14em;text-transform:uppercase;color:var(--line)}
+.hd h2{font-family:var(--font-display);font-size:var(--step-h2);font-weight:900;line-height:0.94;
+  letter-spacing:-0.03em;margin-top:0.45em;max-width:14ch}
+.hd .side{max-width:46ch;color:var(--muted);font-size:var(--step-small)}
+.feat{margin-top:clamp(16px,2.6vh,34px);flex:1 1 auto;display:grid;grid-template-columns:1fr 1fr;
+  border:1px solid var(--line);min-height:0}
+.feat .media{position:relative;border-right:1px solid var(--line);min-height:0}
+#route{position:absolute;inset:0;width:100%;height:100%;display:block}
+.feat .body{padding:clamp(16px,2.6vh,38px);display:flex;flex-direction:column;min-height:0}
+.pill{align-self:flex-start;background:var(--signal);color:var(--text);padding:0.32em 0.75em;
+  border-radius:var(--r-0);font-family:var(--font-mono);font-size:var(--step-label);letter-spacing:0.12em;text-transform:uppercase}
+.feat h3{margin-top:0.75em;font-family:var(--font-display);font-size:var(--step-h3);font-weight:900;
+  letter-spacing:-0.02em;line-height:1.05}
+.feat p{margin-top:0.6em;color:var(--muted);font-size:var(--step-small);max-width:42ch}
+.feat .end{margin-top:auto;padding-top:0.9em;border-top:1px solid var(--line);display:flex;
+  justify-content:space-between;gap:1em;font-family:var(--font-mono);font-size:var(--step-label);
+  letter-spacing:0.1em;text-transform:uppercase;color:var(--line)}
 
-.btn{display:inline-flex;align-items:center;gap:0.9em;font-family:var(--font-mono);font-size:var(--step-label);
-  letter-spacing:0.15em;text-transform:uppercase;padding:1.15em 2em;border:1px solid var(--line);
-  border-radius:var(--r-0);background:transparent;color:var(--text);cursor:pointer;
+/* ---------- 03 · le journal de vol, grille 4 colonnes de #100 ---------- */
+.log{position:absolute;inset:0;z-index:3;background:var(--bg);color:var(--text);will-change:transform;
+  padding:clamp(70px,10vh,116px) clamp(18px,4vw,52px) clamp(20px,3.5vh,44px);overflow:hidden}
+.log .inner{max-width:1200px;margin:0 auto;height:100%;display:flex;flex-direction:column}
+.log h2{font-family:var(--font-display);font-size:var(--step-h2);font-weight:900;line-height:0.94;letter-spacing:-0.03em}
+.tline{margin-top:clamp(14px,2.6vh,34px);display:grid;grid-template-columns:auto auto 1fr auto;
+  gap:0.8em clamp(12px,1.8vw,26px);align-items:baseline;overflow:auto}
+.tline .yr{font-family:var(--font-mono);font-weight:700;font-size:var(--step-body);color:var(--signal)}
+.tline .sep{font-family:var(--font-mono);color:var(--muted)}
+.tline .what{font-size:var(--step-body)}
+.tline .num{font-family:var(--font-mono);font-size:var(--step-small);color:var(--muted);white-space:nowrap}
+
+/* ---------- 04 · l escalier de piliers, #108 ---------- */
+.stair{position:absolute;inset:0;z-index:4;background:var(--text);color:var(--bg);will-change:transform;
+  padding:clamp(70px,10vh,116px) clamp(18px,4vw,52px) clamp(20px,3.5vh,44px);overflow:hidden}
+.stair .inner{max-width:1200px;margin:0 auto;height:100%;display:flex;flex-direction:column}
+.stair h2{font-family:var(--font-display);font-size:var(--step-h2);font-weight:900;line-height:0.94;
+  letter-spacing:-0.03em;max-width:13ch}
+.pillars{margin-top:auto;display:grid;grid-template-columns:repeat(6,1fr);gap:clamp(8px,1.2vw,20px);align-items:end}
+.pil{border-top:1px solid var(--bg);padding-top:0.75em;display:flex;flex-direction:column;gap:0.3em}
+.pil b{font-family:var(--font-mono);font-weight:700;font-size:var(--step-h3);letter-spacing:-0.02em;line-height:1}
+.pil span{font-family:var(--font-mono);font-size:var(--step-label);letter-spacing:0.1em;text-transform:uppercase;color:var(--surface)}
+.pil:nth-child(2){margin-bottom:3vh} .pil:nth-child(3){margin-bottom:6vh}
+.pil:nth-child(4){margin-bottom:9vh} .pil:nth-child(5){margin-bottom:12vh} .pil:nth-child(6){margin-bottom:15vh}
+
+/* ---------- 05 · le sélecteur de route, mécanique de #137 ---------- */
+.picker{position:absolute;inset:0;z-index:5;background:var(--bg);color:var(--text);will-change:transform;overflow:hidden;
+  display:flex;flex-direction:column;padding:clamp(70px,10vh,116px) clamp(18px,4vw,52px) clamp(16px,3vh,32px)}
+.picker .top{max-width:1200px;margin:0 auto;width:100%}
+.picker h2{font-family:var(--font-display);font-size:var(--step-h3);font-weight:900;letter-spacing:-0.02em}
+.picker .top p{margin-top:0.45em;color:var(--muted);font-size:var(--step-small);max-width:52ch}
+.stack{position:relative;flex:1 1 auto;min-height:0;margin:clamp(12px,2vh,26px) auto;max-width:1200px;width:100%;
+  border:1px solid var(--line);display:flex;align-items:center;justify-content:center}
+.big{font-family:var(--font-mono);font-weight:700;font-size:var(--step-hero);line-height:0.9;letter-spacing:-0.04em;text-align:center}
+.big u{display:block;font-size:var(--step-label);text-decoration:none;color:var(--muted);letter-spacing:0.16em;
+  text-transform:uppercase;margin-top:0.8em}
+.stack .lbl{position:absolute;top:clamp(10px,2vh,22px);left:clamp(12px,2vw,26px);font-family:var(--font-mono);
+  font-size:var(--step-label);letter-spacing:0.14em;text-transform:uppercase;color:var(--muted)}
+.meta{position:absolute;bottom:clamp(10px,2vh,22px);left:clamp(12px,2vw,26px);right:clamp(12px,2vw,26px);
+  display:flex;flex-wrap:wrap;gap:0.5em clamp(12px,2.4vw,40px);font-family:var(--font-mono);
+  font-size:var(--step-small);color:var(--muted)}
+.meta b{color:var(--text);font-weight:700}
+.meta b.ok{color:var(--signal)}
+.rail{max-width:1200px;margin:0 auto;width:100%;display:flex;gap:clamp(6px,0.8vw,12px);overflow-x:auto;padding-bottom:0.3em}
+.rail button{flex:0 0 auto;border:1px solid var(--line);background:transparent;color:var(--line);
+  border-radius:var(--r-0);padding:0.7em 1em;font-family:var(--font-mono);font-size:var(--step-label);
+  letter-spacing:0.1em;text-transform:uppercase;cursor:pointer;
   transition:background var(--t-fast) var(--ease), color var(--t-fast) var(--ease)}
-.btn:hover{background:var(--text);color:var(--bg)}
+.rail button[aria-pressed="true"]{background:var(--text);color:var(--bg)}
 :focus-visible{outline:2px solid var(--signal);outline-offset:3px}
 
-.calc{position:absolute;z-index:22;will-change:transform;left:clamp(18px,4vw,52px);right:clamp(18px,4vw,52px);
-  top:38vh;bottom:5vh;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.15fr);
-  grid-template-rows:auto 1fr;border:1px solid var(--line);background:var(--bg);box-shadow:var(--shadow)}
-.calc-head{grid-column:1 / -1;display:flex;flex-wrap:wrap;align-items:baseline;gap:0.4em 1.4em;
-  padding:clamp(14px,2vh,26px) clamp(16px,2.4vw,34px);border-bottom:1px solid var(--line)}
-.calc-head h2{font-family:var(--font-display);font-size:var(--step-h3);font-weight:900;letter-spacing:-0.02em;line-height:1}
-.calc-head p{color:var(--muted);font-size:var(--step-small);max-width:48ch}
-.ctrl{padding:clamp(12px,2vh,22px) clamp(16px,2.4vw,34px);border-right:1px solid var(--line)}
-.row{padding-bottom:clamp(12px,2vh,20px)}
-.row + .row{padding-top:clamp(12px,2vh,20px);border-top:1px solid var(--line)}
-.row label{display:block;font-family:var(--font-mono);font-size:var(--step-label);letter-spacing:0.14em;
-  text-transform:uppercase;color:var(--muted);margin-bottom:0.7em}
-select{width:100%;padding:0.85em 0.9em;background:var(--surface);border:1px solid var(--line);
-  border-radius:var(--r-0);color:var(--text);cursor:pointer;font-family:var(--font-mono);font-size:var(--step-small)}
-.read{padding:clamp(12px,2vh,22px) clamp(16px,2.4vw,34px);display:flex;flex-direction:column}
-.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1px;background:var(--line);flex:1 1 auto}
-.cell{background:var(--bg);padding:clamp(8px,1.5vh,16px) clamp(8px,1vw,14px);display:flex;flex-direction:column;justify-content:center}
-.cell dt{font-family:var(--font-mono);font-size:var(--step-label);letter-spacing:0.12em;text-transform:uppercase;color:var(--muted)}
-.cell dd{margin-top:0.35em;font-family:var(--font-mono);font-weight:700;font-size:var(--step-h3);line-height:1;letter-spacing:-0.02em}
-.cell dd u{font-size:var(--step-label);text-decoration:none;color:var(--muted);letter-spacing:0.1em}
-.cell--key dd{color:var(--signal)}
-.note{margin-top:clamp(10px,1.6vh,18px);color:var(--muted);font-size:var(--step-small);max-width:56ch}
-.note b{color:var(--text);font-weight:700}
-
-.ledger{position:absolute;z-index:24;inset:0;will-change:transform;background:var(--bg);border-top:1px solid var(--line);
-  display:grid;grid-template-rows:auto 1fr auto;padding:clamp(72px,10vh,116px) clamp(18px,4vw,52px) clamp(18px,3vh,34px);overflow:hidden}
-.ledger h2{font-family:var(--font-display);font-size:var(--step-h2);font-weight:900;line-height:0.94;letter-spacing:-0.03em}
-.ledger h2 em{font-family:var(--font-edito);font-style:italic;font-weight:400}
-.rec{display:grid;grid-template-columns:max-content minmax(0,1fr);gap:0.9em clamp(18px,2.8vw,48px);
-  align-content:start;margin-top:clamp(14px,2.4vh,30px);overflow:auto}
-.rec dt{font-family:var(--font-mono);font-weight:700;font-size:var(--step-body);letter-spacing:0.06em;color:var(--signal)}
-.rec dd{font-size:var(--step-body);color:var(--muted);line-height:1.4}
-.rec dd b{color:var(--text);font-weight:500}
-.foot{display:flex;flex-wrap:wrap;align-items:flex-start;gap:clamp(10px,1.6vw,28px);
-  padding-top:clamp(14px,2.2vh,26px);border-top:1px solid var(--line)}
-.foot > div{flex:1 1 clamp(150px,17vw,240px);min-width:0}
-.foot h3{font-family:var(--font-mono);font-size:var(--step-label);font-weight:700;letter-spacing:0.14em;
-  text-transform:uppercase;color:var(--muted)}
-.foot ul{list-style:none;margin-top:0.7em}
-.foot li{font-size:var(--step-small);line-height:1.7}
-.foot a{color:var(--text);text-decoration:none;border-bottom:1px solid transparent;
-  transition:border-color var(--t-fast) var(--ease)}
-.foot a:hover{border-bottom-color:var(--line)}
-.sign{flex:1 1 100%;display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-end;
-  gap:0.6em 1.6em;padding-top:clamp(12px,2vh,24px)}
-.sign p{font-family:var(--font-edito);font-style:italic;font-size:var(--step-h3);line-height:1}
-.sign small{font-family:var(--font-mono);font-size:var(--step-label);letter-spacing:0.06em;color:var(--muted);max-width:60ch;line-height:1.7}
+/* ---------- 06 · le pied, #88 ---------- */
+.foot{position:absolute;inset:0;z-index:6;background:var(--text);color:var(--bg);will-change:transform;overflow:hidden;
+  display:flex;flex-direction:column;justify-content:space-between;
+  padding:clamp(70px,10vh,116px) clamp(18px,4vw,52px) clamp(16px,3vh,32px)}
+.foot .cols{max-width:1200px;margin:0 auto;width:100%;display:flex;flex-wrap:wrap;gap:clamp(14px,2vw,40px);
+  border-top:1px solid var(--surface);padding-top:clamp(12px,2.2vh,26px)}
+.foot .cols > div{flex:1 1 clamp(140px,16vw,220px)}
+.foot h3{font-family:var(--font-mono);font-size:var(--step-label);letter-spacing:0.14em;text-transform:uppercase;color:var(--surface)}
+.foot ul{list-style:none;margin-top:0.55em}
+.foot li{font-size:var(--step-small);line-height:1.8}
+.foot a{color:var(--bg);text-decoration:none;border-bottom:1px solid transparent;transition:border-color var(--t-fast) var(--ease)}
+.foot a:hover{border-bottom-color:var(--surface)}
+.foot .mark{max-width:1200px;margin:0 auto;width:100%}
+.foot .mark p{font-family:var(--font-display);font-weight:900;font-size:var(--step-hero);line-height:0.82;
+  letter-spacing:-0.05em}
+.foot .legal{max-width:70ch;margin:0 auto;width:100%;font-family:var(--font-mono);font-size:var(--step-label);
+  letter-spacing:0.06em;color:var(--surface);line-height:1.7}
 
 @media (max-width:900px){
-  .hud .meta{display:none}
-  #b1{right:clamp(18px,4vw,52px);top:13vh;width:min(84vw,560px)}
-  #b3,#b4{width:min(88vw,620px)}
-  #b2{width:min(80vw,460px)}
-  .calc{grid-template-columns:minmax(0,1fr);top:36vh;bottom:4vh}
-  .ctrl{border-right:0;border-bottom:1px solid var(--line)}
-  .calc-head p{display:none}
-  .note{display:none}
+  .hud .br{display:none}
+  .feat{grid-template-columns:1fr}
+  .feat .media{border-right:0;border-bottom:1px solid var(--line);min-height:20vh}
+  .pillars{grid-template-columns:repeat(2,1fr);gap:1.1em}
+  .pil{margin-bottom:0}
+  .tline{grid-template-columns:auto auto 1fr}
+  .tline .num{grid-column:3}
 }
 @media (prefers-reduced-motion:reduce){ *{transition:none} }
 </style>
 </head>
 <body>
 
-<svg width="0" height="0" aria-hidden="true" style="position:absolute">
-  <filter id="grainfx">
-    <feTurbulence type="fractalNoise" baseFrequency="0.011" numOctaves="2" result="n"/>
-    <feDisplacementMap in="SourceGraphic" in2="n" scale="0" xChannelSelector="R" yChannelSelector="G"/>
-  </filter>
-</svg>
-
-
-<section id="film" aria-label="One flight, scrubbed by scroll">
-  <header class="hud"><a href="#film" aria-label="Bombardier, home" style="text-decoration:none;color:var(--text)"><svg class="wm" viewBox="0 0 447.3334045 262.0837097" role="img" aria-label="Bombardier" focusable="false" fill="currentColor"><path d="M0.1653439,261.070343h24.5013275
+<div class="hud" id="hud">
+  <div class="tl">
+    <a href="#spacer" aria-label="Bombardier, home" style="text-decoration:none;color:inherit"><svg class="wm" viewBox="0 0 447.3334045 262.0837097" role="img" aria-label="Bombardier" focusable="false" fill="currentColor"><path d="M0.1653439,261.070343h24.5013275
 				c14.6851654,0,23.1612129-6.7143097,23.1612129-16.617157c0-7.3014374-5.3693657-12.5877838-14.4327583-14.0977631
 				c7.3838844-1.8448639,11.7481155-6.6268921,11.7481155-13.0882721c0-8.894165-8.0540085-14.9378052-21.9863625-14.9378052H0
 				c2.1799319,3.6944122,2.9370327,10.4907379,2.9370327,17.4525909v23.8311768
@@ -227,93 +252,105 @@ select{width:100%;padding:0.85em 0.9em;background:var(--surface);border:1px soli
 				c-13.0524597-13.0535812-26.1064148-15.2291603-43.511261-15.2291603H179.0698395z M142.0847778,0l13.0535126,13.0535936
 				c13.0535736,13.0534544,26.107132,15.2291536,43.5118561,15.2291536h35.8972168
 				c17.4047241,0,26.5421753,1.0877895,40.6830444,10.8778782h1.741394l-23.9319305-23.9314556
-				C239.9862976,2.1755912,226.9327393,0,209.5280151,0H142.0847778z"/></svg></a><span class="rule" aria-hidden="true"></span><span class="meta">YUL 45°28'N · MACH 0.95 · FL510</span></header>
-  <div id="stage">
-    <canvas id="plate" aria-hidden="true"></canvas>
-    <div class="world">
+				C239.9862976,2.1755912,226.9327393,0,209.5280151,0H142.0847778z"/></svg></a>
+    <span class="cap">Global 8000 · Mach 0.95 · 8,000 nm</span>
+  </div>
+  <span class="tr">Concept redesign</span>
+  <span class="br">Every figure here is published by Bombardier.</span>
+</div>
 
-      <article class="blk" id="b1">
-                <h1>You buy the day <em>back</em>.</h1>
-        <p>Nobody buys the jet. Bombardier's own homepage carries two empty H1 tags and a title that says “Welcome”. Here is what it could have said. Take off.</p>
-      </article>
+<section id="spacer" aria-label="One flight">
+  <div class="fixed-layer">
 
-      <article class="blk" id="b2">
-                <h2>Fifty-one thousand <em>feet</em>.</h2>
-        <p>Above the weather, above the traffic, above the airways everyone else is queuing in.</p>
-      </article>
-
-      <article class="blk" id="b3">
-                <h2>Speed is not a number. It is hours.</h2>
-        <p>Push the needle from cruise to top speed and watch the second clock fall. That gap is the entire product.</p>
-      </article>
-
-      <article class="blk" id="b4">
-                <h2>Thirty percent more airports than anyone else.</h2>
-        <p>Two thousand more places to land, in Bombardier's own words.</p>
-      </article>
-
-      <section class="calc" id="calc" data-outil aria-label="Stopover calculator">
-        <div class="calc-head">
-                  <h2>What does the stop cost you?</h2>
-          <p>Pick two cities. Great-circle distance, non-stop verdict and block time are computed live from Bombardier's published figures.</p>
-        </div>
-        <div class="ctrl">
-          <div class="row">
-            <label for="from">Departure</label>
-            <select id="from" aria-label="Departure city"></select>
-          </div>
-          <div class="row">
-            <label for="to">Arrival</label>
-            <select id="to" aria-label="Arrival city"></select>
-          </div>
-        </div>
-        <div class="read">
-          <dl class="grid">
-            <div class="cell"><dt>Great-circle</dt><dd><span id="o1">0</span> <u>nm</u></dd></div>
-            <div class="cell"><dt>Non-stop</dt><dd><span id="o2">yes</span></dd></div>
-            <div class="cell"><dt>At Mach 0.85</dt><dd><span id="o3">0</span> <u>h</u></dd></div>
-            <div class="cell"><dt>At Mach 0.95</dt><dd><span id="o4">0</span> <u>h</u></dd></div>
-            <div class="cell cell--key"><dt>Hours given back</dt><dd><span id="o5">0</span> <u>min</u></dd></div>
-            <div class="cell"><dt>Local arrival</dt><dd><span id="o6">00:00</span></dd></div>
-          </dl>
-          <p class="note"><b>Range 8,000 nm, top speed Mach 0.95, typical cruise Mach 0.85.</b> Distance by haversine, true airspeed from Mach at FL510. Every input is a figure Bombardier publishes.</p>
-        </div>
-      </section>
-
-      <section class="ledger" id="ledger" aria-label="The record">
-        <h2>The record, <em>unabridged</em>.</h2>
-        <dl class="rec">
-          <dt>8,000 nm</dt><dd>Global 8000 range. <b>14,816 km without landing.</b></dd>
-          <dt>Mach 0.95</dt><dd>Top speed. <b>The world's fastest private jet</b>, in Bombardier's own words.</dd>
-          <dt>+30%</dt><dd><b>Thirty percent more airports, two thousand more locations</b> than its closest competitor.</dd>
-          <dt>4 spaces</dt><dd>Four equal-size living spaces. Cabin <b>54 ft 5 in</b>, up to 19 passengers.</dd>
-          <dt>5,760 ft</dt><dd>Take-off distance. Shorter runways mean closer airports.</dd>
-          <dt>4,000</dt><dd>Experts available <b>24/7/365</b> across the worldwide support network.</dd>
-          <dt>Today</dt><dd>Their homepage weighs <b>34 megabytes</b>, carries <b>two empty H1 tags</b>, and its title says <b>“Welcome”</b>.</dd>
-        </dl>
-        <div class="foot">
-          <div><h3>Aircraft</h3><ul>
-            <li><a href="https://bombardier.com/en/aircraft/global-8000">Global 8000</a></li>
-            <li><a href="https://bombardier.com/en">Global 7500</a></li>
-            <li><a href="https://bombardier.com/en">Challenger 3500</a></li></ul></div>
-          <div><h3>Defense</h3><ul>
-            <li><a href="https://bombardier.com/en">Mission platforms</a></li>
-            <li><a href="https://bombardier.com/en">Special missions</a></li></ul></div>
-          <div><h3>Support</h3><ul>
-            <li><a href="https://bombardier.com/en">OEM advantage</a></li>
-            <li><a href="https://bombardier.com/en">Service centres</a></li></ul></div>
-          <div><h3>Bombardier</h3><ul>
-            <li>Dorval, Québec</li>
-            <li>TSX: BBD</li></ul></div>
-          <div class="sign">
-            <p>Chase the dawn.</p>
-            <small>Unsolicited concept redesign, not affiliated with or endorsed by Bombardier Inc. Every figure and quotation is taken from bombardier.com. Concept and build: Dondi Santeme, Groupe SD.</small>
-          </div>
-        </div>
-      </section>
-
+    <div class="hero" id="hero">
+      <span class="rule-v" aria-hidden="true"></span>
+      <div>
+        <h1>You buy the day <em>back</em>.</h1>
+        <p class="sub">Nobody buys the jet. Bombardier's own homepage carries two empty H1 tags and a title that says “Welcome”, on 34 megabytes of video. Here is what it could have said.</p>
+      </div>
     </div>
-    <div class="vign" aria-hidden="true"></div>
+
+    <div class="panel" id="panel">
+      <div class="wrap">
+        <div class="hd">
+          <div>
+            <span class="badge">The claim</span>
+            <h2>They already wrote the argument.</h2>
+          </div>
+          <p class="side">On that same homepage: “the world's fastest private jet”, and a Global 8000 that masters thirty percent more airports, two thousand more locations, than its closest competitor. Those are not moods. They are numbers.</p>
+        </div>
+        <div class="feat">
+          <div class="media"><canvas id="route" aria-hidden="true"></canvas></div>
+          <div class="body">
+            <span class="pill">Non-stop</span>
+            <h3>Montréal to Dubai, without landing.</h3>
+            <p>Five thousand seven hundred and thirty four nautical miles on one tank, at a top speed no other business jet reaches. The aircraft does not stop, so the page does not stop either.</p>
+            <div class="end"><span>Great-circle track</span><span>YUL → DXB</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="log" id="log">
+      <div class="inner">
+        <h2>The flight log.</h2>
+        <div class="tline">
+          <span class="yr">8,000 nm</span><span class="sep">·</span><span class="what">Range of the Global 8000, without landing</span><span class="num">14,816 km</span>
+          <span class="yr">Mach 0.95</span><span class="sep">·</span><span class="what">Top speed. The world's fastest private jet, in their words</span><span class="num">544 kt at FL510</span>
+          <span class="yr">+30%</span><span class="sep">·</span><span class="what">More airports than its closest competitor can master</span><span class="num">2,000 more locations</span>
+          <span class="yr">4 spaces</span><span class="sep">·</span><span class="what">Four equal-size living spaces, up to 19 passengers</span><span class="num">cabin 54 ft 5 in</span>
+          <span class="yr">5,760 ft</span><span class="sep">·</span><span class="what">Take-off distance. Shorter runways mean closer airports</span><span class="num">1,756 m</span>
+          <span class="yr">4,000</span><span class="sep">·</span><span class="what">Experts on the worldwide support network</span><span class="num">24/7/365</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="stair" id="stair">
+      <div class="inner">
+        <h2>What their homepage says instead.</h2>
+        <div class="pillars">
+          <div class="pil"><b>34 Mo</b><span>page weight</span></div>
+          <div class="pil"><b>30 Mo</b><span>of it video</span></div>
+          <div class="pil"><b>2</b><span>H1 tags</span></div>
+          <div class="pil"><b>0</b><span>words inside them</span></div>
+          <div class="pil"><b>11.6</b><span>screens tall</span></div>
+          <div class="pil"><b>Welcome</b><span>the title tag</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="picker" id="picker" data-outil aria-label="Route selector">
+      <div class="top">
+        <h2>Pick a route. Read what the stop costs you.</h2>
+        <p>Great-circle distance by haversine, non-stop verdict against the published 8,000 nm range, block time at typical cruise and at top speed.</p>
+      </div>
+      <div class="stack">
+        <span class="lbl" id="rLbl">YUL → DXB</span>
+        <div class="big"><span id="rMin">74</span><u>minutes given back</u></div>
+        <div class="meta" id="rMeta"></div>
+      </div>
+      <div class="rail" id="rail"></div>
+    </div>
+
+    <div class="foot" id="foot">
+      <div class="cols">
+        <div><h3>Aircraft</h3><ul>
+          <li><a href="https://bombardier.com/en/aircraft/global-8000">Global 8000</a></li>
+          <li><a href="https://bombardier.com/en">Global 7500</a></li>
+          <li><a href="https://bombardier.com/en">Challenger 3500</a></li></ul></div>
+        <div><h3>Defense</h3><ul>
+          <li><a href="https://bombardier.com/en">Mission platforms</a></li>
+          <li><a href="https://bombardier.com/en">Special missions</a></li></ul></div>
+        <div><h3>Support</h3><ul>
+          <li><a href="https://bombardier.com/en">OEM advantage</a></li>
+          <li><a href="https://bombardier.com/en">Service centres</a></li></ul></div>
+        <div><h3>Company</h3><ul>
+          <li>Dorval, Québec</li><li>TSX: BBD</li></ul></div>
+      </div>
+      <div class="mark"><p>Chase the dawn.</p></div>
+      <p class="legal">Unsolicited concept redesign, not affiliated with or endorsed by Bombardier Inc. Every figure and quotation is taken from bombardier.com. Concept and build: Dondi Santeme, Groupe SD.</p>
+    </div>
+
     <div class="grain" aria-hidden="true"></div>
   </div>
 </section>
@@ -325,286 +362,125 @@ select{width:100%;padding:0.85em 0.9em;background:var(--surface);border:1px soli
 (function(){
 "use strict";
 const REDUCED = matchMedia('(prefers-reduced-motion: reduce)').matches;
-const seg  = (p,a,b)=>Math.max(0,Math.min(1,(p-a)/(b-a)));
-const lerp = (a,b,t)=>a+(b-a)*t;
-const css = getComputedStyle(document.documentElement);
-const TOK = {
-  text: css.getPropertyValue('--text').trim()||'#F5F4F0',
-  line: css.getPropertyValue('--line').trim()||'#D3D1C7',
+const seg=(p,a,b)=>Math.max(0,Math.min(1,(p-a)/(b-a)));
+const lerp=(a,b,t)=>a+(b-a)*t;
+const css=getComputedStyle(document.documentElement);
+const TOK={ text:css.getPropertyValue('--text').trim()||'#F5F4F0',
+  bg:css.getPropertyValue('--bg').trim()||'#0A0A0A',
+  line:css.getPropertyValue('--line').trim()||'#D3D1C7',
   muted:css.getPropertyValue('--muted').trim()||'#888780',
   accent:css.getPropertyValue('--accent').trim()||'#002C7B',
-  signal:css.getPropertyValue('--signal').trim()||'#E11C16',
-  bg:   css.getPropertyValue('--bg').trim()||'#0A0A0A',
-  surface:css.getPropertyValue('--surface').trim()||'#2C2C2A'
-};
-const hex2rgb = h => { h=h.replace('#',''); if(h.length===3) h=h[0]+h[0]+h[1]+h[1]+h[2]+h[2];
-  return [parseInt(h.slice(0,2),16),parseInt(h.slice(2,4),16),parseInt(h.slice(4,6),16)]; };
-const rgba = (hex,a)=>{const c=hex2rgb(hex);return 'rgba('+c[0]+','+c[1]+','+c[2]+','+a+')';};
+  signal:css.getPropertyValue('--signal').trim()||'#E11C16' };
+const hex2rgb=h=>{h=h.replace('#','');if(h.length===3)h=h[0]+h[0]+h[1]+h[1]+h[2]+h[2];
+  return [parseInt(h.slice(0,2),16),parseInt(h.slice(2,4),16),parseInt(h.slice(4,6),16)];};
+const rgba=(hex,a)=>{const c=hex2rgb(hex);return 'rgba('+c[0]+','+c[1]+','+c[2]+','+a+')';};
 
-/* ---------- le calculateur : chiffres publies par Bombardier ---------- */
-const RANGE_NM = 8000;      // portee Global 8000
-const A_KT     = 573;       // vitesse du son a FL510, en noeuds
-const M_CRUISE = 0.85, M_TOP = 0.95;
-const CITIES = [
-  ['YUL','Montréal',45.47,-73.74,-4],   ['JFK','New York',40.64,-73.78,-4],
-  ['YVR','Vancouver',49.19,-123.18,-7], ['LAX','Los Angeles',33.94,-118.41,-7],
-  ['MIA','Miami',25.79,-80.29,-4],      ['GRU','São Paulo',-23.43,-46.47,-3],
-  ['LHR','London',51.47,-0.45,1],       ['CDG','Paris',49.01,2.55,2],
-  ['ZRH','Zurich',47.46,8.55,2],        ['SVO','Moscow',55.97,37.41,3],
-  ['DXB','Dubai',25.25,55.36,4],        ['DOH','Doha',25.27,51.61,3],
-  ['RUH','Riyadh',24.96,46.70,3],       ['JNB','Johannesburg',-26.13,28.24,2],
-  ['DEL','Delhi',28.56,77.10,5.5],      ['PEK','Beijing',40.08,116.58,8],
-  ['HKG','Hong Kong',22.31,113.91,8],   ['SIN','Singapore',1.36,103.99,8],
-  ['NRT','Tokyo',35.76,140.39,9],       ['SYD','Sydney',-33.94,151.18,10]
-];
-const rad = d => d*Math.PI/180;
-function haversineNm(a,b){
-  const R=3440.065; // rayon terrestre en milles nautiques
-  const dLat=rad(b[2]-a[2]), dLon=rad(b[3]-a[3]);
-  const s=Math.sin(dLat/2)**2 + Math.cos(rad(a[2]))*Math.cos(rad(b[2]))*Math.sin(dLon/2)**2;
-  return 2*R*Math.asin(Math.min(1,Math.sqrt(s)));
+/* ---------- chiffres publies par Bombardier ---------- */
+const RANGE_NM=8000, A_KT=573, M_CRUISE=0.85, M_TOP=0.95;
+const C={ YUL:['Montréal',45.47,-73.74], DXB:['Dubai',25.25,55.36], SIN:['Singapore',1.36,103.99],
+  NRT:['Tokyo',35.76,140.39], LHR:['London',51.47,-0.45], LAX:['Los Angeles',33.94,-118.41],
+  GRU:['São Paulo',-23.43,-46.47], SYD:['Sydney',-33.94,151.18] };
+const ROUTES=[['YUL','DXB'],['YUL','SIN'],['YUL','NRT'],['YUL','LHR'],['LHR','SYD'],['LAX','GRU']];
+const rad=d=>d*Math.PI/180;
+function nmBetween(a,b){ const R=3440.065;
+  const dLat=rad(b[1]-a[1]), dLon=rad(b[2]-a[2]);
+  const s=Math.sin(dLat/2)**2+Math.cos(rad(a[1]))*Math.cos(rad(b[1]))*Math.sin(dLon/2)**2;
+  return 2*R*Math.asin(Math.min(1,Math.sqrt(s))); }
+const hhmm=h=>{const t=Math.round(h*60);return Math.floor(t/60)+' h '+String(t%60).padStart(2,'0');};
+let active=0;
+function routeData(i){
+  const [fa,ta]=ROUTES[i], a=C[fa], b=C[ta];
+  const nm=nmBetween(a,b), tC=nm/(A_KT*M_CRUISE), tT=nm/(A_KT*M_TOP);
+  return { fa,ta,nm,tC,tT, gain:Math.round((tC-tT)*60), stop:nm<=RANGE_NM };
 }
-const elFrom=document.getElementById('from'), elTo=document.getElementById('to');
-CITIES.forEach((c,i)=>{
-  const o1=document.createElement('option'); o1.value=i; o1.textContent=c[0]+' · '+c[1]; elFrom.appendChild(o1);
-  const o2=document.createElement('option'); o2.value=i; o2.textContent=c[0]+' · '+c[1]; elTo.appendChild(o2);
+
+/* ---------- le tracé de route, seul canvas du site ---------- */
+const rc=document.getElementById('route'), rx=rc.getContext('2d');
+function drawRoute(){
+  const r=rc.getBoundingClientRect(); if(r.width<2||r.height<2) return;
+  const dpr=Math.min(window.devicePixelRatio||1,2);
+  rc.width=Math.round(r.width*dpr); rc.height=Math.round(r.height*dpr);
+  rx.setTransform(dpr,0,0,dpr,0,0);
+  const w=r.width,h=r.height,d=routeData(active);
+  rx.clearRect(0,0,w,h); rx.fillStyle=TOK.bg; rx.fillRect(0,0,w,h);
+  rx.lineWidth=1;
+  rx.strokeStyle=rgba(TOK.line,0.34);
+  rx.beginPath(); rx.arc(w/2,h*1.55,h*1.25,Math.PI*1.18,Math.PI*1.82); rx.stroke();
+  rx.strokeStyle=rgba(TOK.line,0.11);
+  for(let i=1;i<=4;i++){ rx.beginPath(); rx.arc(w/2,h*1.55,h*(1.25+i*0.10),Math.PI*1.2,Math.PI*1.8); rx.stroke(); }
+  const x0=w*0.16,x1=w*0.84,yb=h*0.60;
+  rx.strokeStyle=rgba(TOK.accent,0.95); rx.lineWidth=2;
+  rx.beginPath();
+  for(let i=0;i<=60;i++){ const k=i/60,x=x0+(x1-x0)*k,y=yb-Math.sin(k*Math.PI)*h*0.28;
+    i?rx.lineTo(x,y):rx.moveTo(x,y); }
+  rx.stroke(); rx.lineWidth=1;
+  rx.fillStyle=TOK.signal;
+  [[x0,yb],[x1,yb]].forEach(function(pt){ rx.beginPath(); rx.arc(pt[0],pt[1],3.4,0,7); rx.fill(); });
+  rx.fillStyle=rgba(TOK.line,0.92); rx.font='700 11px "Space Mono", monospace';
+  rx.textAlign='left';  rx.fillText(d.fa, x0-2, yb+20);
+  rx.textAlign='right'; rx.fillText(d.ta, x1+2, yb+20);
+  rx.textAlign='left';
+  rx.fillStyle=rgba(TOK.muted,0.9); rx.font='400 10px "Space Mono", monospace';
+  rx.fillText(Math.round(d.nm).toLocaleString('en-US')+' nm', x0-2, yb+38);
+}
+
+/* ---------- le sélecteur, mécanique de #137 ---------- */
+const rail=document.getElementById('rail');
+ROUTES.forEach(function(r,i){
+  const b=document.createElement('button'); b.type='button';
+  b.textContent=r[0]+' → '+r[1]; b.setAttribute('aria-pressed', i===0?'true':'false');
+  b.addEventListener('click',function(){ active=i; paint(); });
+  rail.appendChild(b);
 });
-elFrom.value=0; elTo.value=10;              // Montreal -> Dubai par defaut
-const out=['o1','o2','o3','o4','o5','o6'].map(i=>document.getElementById(i));
-const hhmm = h => { const t=Math.round(h*60); return Math.floor(t/60)+' h '+String(t%60).padStart(2,'0'); };
-function computeRoute(){
-  const a=CITIES[+elFrom.value], b=CITIES[+elTo.value];
-  const nm=haversineNm(a,b);
-  const tC=nm/(A_KT*M_CRUISE), tT=nm/(A_KT*M_TOP);
-  const gain=Math.round((tC-tT)*60);
-  const dep=9;                                // depart a 09:00 locale, hypothese affichee
-  let arr=(dep+tT+(b[4]-a[4]))%24; if(arr<0) arr+=24;
-  return { a,b,nm,tC,tT,gain,arr };
-}
-function renderRoute(){
-  const r=computeRoute();
-  out[0].textContent=Math.round(r.nm).toLocaleString('en-US');
-  out[1].textContent=r.nm<=RANGE_NM?'yes':'no';
-  out[2].textContent=hhmm(r.tC);
-  out[3].textContent=hhmm(r.tT);
-  out[4].textContent=r.gain;
-  out[5].textContent=String(Math.floor(r.arr)).padStart(2,'0')+':'+String(Math.round((r.arr%1)*60)).padStart(2,'0');
-  return r;
-}
-elFrom.addEventListener('change',renderRoute);
-elTo.addEventListener('change',renderRoute);
-
-/* ---------- la planche ---------- */
-const plate=document.getElementById('plate'), ctx=plate.getContext('2d');
-const stage=document.getElementById('stage');
-const disp=document.querySelector('#grainfx feDisplacementMap');
-let W=0,H=0,DPR=1,lastP=0;
-function sizePlate(){
-  DPR=Math.min(window.devicePixelRatio||1,2);
-  const r=plate.getBoundingClientRect();
-  W=Math.max(1,Math.round(r.width)); H=Math.max(1,Math.round(r.height));
-  plate.width=Math.round(W*DPR); plate.height=Math.round(H*DPR);
-  ctx.setTransform(DPR,0,0,DPR,0,0);
-}
-/* silhouette d'avion, tracee au filet : c'est le sujet du R2 */
-function plane(cx,cy,s,rot){
-  ctx.save(); ctx.translate(cx,cy); ctx.rotate(rot); ctx.scale(s,s);
-  ctx.beginPath();
-  ctx.moveTo(-52,0); ctx.lineTo(-30,-5); ctx.lineTo(26,-6); ctx.lineTo(46,-2);
-  ctx.lineTo(52,0);  ctx.lineTo(46,3);   ctx.lineTo(26,6);  ctx.lineTo(-30,5); ctx.closePath();
-  ctx.moveTo(-8,-4);  ctx.lineTo(-30,-30); ctx.lineTo(-16,-30); ctx.lineTo(4,-4);
-  ctx.moveTo(-8,4);   ctx.lineTo(-30,30);  ctx.lineTo(-16,30);  ctx.lineTo(4,4);
-  ctx.moveTo(-42,-2); ctx.lineTo(-52,-18); ctx.lineTo(-44,-18); ctx.lineTo(-36,-2);
-  ctx.stroke(); ctx.restore();
-}
-function draw(p){
-  ctx.clearRect(0,0,W,H); ctx.fillStyle=TOK.bg; ctx.fillRect(0,0,W,H);
-  const cx=W/2, cy=H*0.52;
-  ctx.lineWidth=1;
-
-  /* ---- cartouche de chapitre, tracé dans la planche et non en DOM ---- */
-  const CH=[[0,'01 / RUNWAY'],[0.13,'02 / CLIMB'],[0.31,'03 / MACH 0.95'],[0.52,'04 / CHASE THE DAWN'],[0.70,'05 / STOPOVER'],[0.88,'06 / RECORD']];
-  let lab=CH[0][1]; for(const c of CH) if(p>=c[0]) lab=c[1];
-  ctx.font='400 11px "Space Mono", monospace'; ctx.textBaseline='alphabetic';
-  ctx.fillStyle=rgba(TOK.muted,0.85); ctx.fillText(lab, 26, H-24);
-  ctx.strokeStyle=rgba(TOK.line,0.3);
-  ctx.beginPath(); ctx.moveTo(26,H-34); ctx.lineTo(26+Math.max(90,lab.length*7.2),H-34); ctx.stroke();
-
-  /* ---- 01 · la piste, en perspective ---- */
-  const runT=1-seg(p,0.10,0.20);
-  if(runT>0.01){
-    const hz=H*0.46, vp=cx;
-    ctx.strokeStyle=rgba(TOK.line,0.34*runT);
-    ctx.beginPath(); ctx.moveTo(0,hz); ctx.lineTo(W,hz); ctx.stroke();
-    ctx.strokeStyle=rgba(TOK.line,0.5*runT);
-    ctx.beginPath();
-    ctx.moveTo(vp-26,hz); ctx.lineTo(cx-W*0.55,H+20);
-    ctx.moveTo(vp+26,hz); ctx.lineTo(cx+W*0.55,H+20);
-    ctx.stroke();
-    /* marques centrales qui defilent : la vitesse sol */
-    ctx.strokeStyle=rgba(TOK.line,0.42*runT); ctx.lineWidth=2;
-    const roll=seg(p,0,0.14);
-    for(let i=0;i<16;i++){
-      const k=((i/16)+roll*2.2)%1, y=hz+(H-hz)*k*k, w=2+22*k*k;
-      if(y<hz) continue;
-      ctx.beginPath(); ctx.moveTo(vp-w/2,y); ctx.lineTo(vp+w/2,y); ctx.stroke();
-    }
-    ctx.lineWidth=1;
-  }
-
-  /* ---- 02 · le profil d'altitude ---- */
-  const climbT=seg(p,0.13,0.31);
-  if(p>0.10 && p<0.40){
-    const a=Math.min(1,seg(p,0.10,0.16))*(1-seg(p,0.34,0.40));
-    ctx.strokeStyle=rgba(TOK.line,0.30*a);
-    const x0=W*0.14, x1=W*0.86, yb=H*0.80, yt=H*0.20;
-    ctx.beginPath(); ctx.moveTo(x0,yb); ctx.lineTo(x1,yb); ctx.moveTo(x0,yb); ctx.lineTo(x0,yt); ctx.stroke();
-    ctx.font='400 10px "Space Mono", monospace'; ctx.textBaseline='middle';
-    for(let i=0;i<=5;i++){
-      const y=yb+(yt-yb)*i/5;
-      ctx.strokeStyle=rgba(TOK.line,0.14*a);
-      ctx.beginPath(); ctx.moveTo(x0,y); ctx.lineTo(x1,y); ctx.stroke();
-      ctx.fillStyle=rgba(TOK.muted,0.75*a);
-      ctx.fillText('FL'+String(i*102).padStart(3,'0'), x0-46, y);
-    }
-    ctx.strokeStyle=rgba(TOK.text,0.85*a); ctx.lineWidth=1.6;
-    ctx.beginPath();
-    for(let i=0;i<=60;i++){
-      const k=i/60; if(k>climbT) break;
-      const x=x0+(x1-x0)*k, y=yb+(yt-yb)*Math.pow(k,0.62);
-      i===0?ctx.moveTo(x,y):ctx.lineTo(x,y);
-    }
-    ctx.stroke(); ctx.lineWidth=1;
-    if(climbT>0.02){
-      const x=x0+(x1-x0)*climbT, y=yb+(yt-yb)*Math.pow(climbT,0.62);
-      ctx.fillStyle=rgba(TOK.signal,0.9*a); ctx.beginPath(); ctx.arc(x,y,3.2,0,7); ctx.fill();
-      ctx.fillStyle=rgba(TOK.text,0.95*a); ctx.font='700 13px "Space Mono", monospace';
-      ctx.fillText('FL'+String(Math.round(climbT*510)).padStart(3,'0'), x+12, y-2);
-    }
-  }
-
-  /* ---- 03 · le cadran de Mach ---- */
-  const machShow=Math.min(1,seg(p,0.30,0.36))*(1-seg(p,0.60,0.66));
-  const mach=lerp(M_CRUISE,M_TOP,seg(p,0.33,0.50));
-  if(machShow>0.01){
-    const r=Math.min(W,H)*0.24, my=H*0.44;
-    ctx.strokeStyle=rgba(TOK.line,0.4*machShow);
-    ctx.beginPath(); ctx.arc(cx,my,r,Math.PI*0.75,Math.PI*2.25); ctx.stroke();
-    ctx.font='400 10px "Space Mono", monospace'; ctx.textAlign='center'; ctx.textBaseline='middle';
-    for(let i=0;i<=10;i++){
-      const k=i/10, ang=Math.PI*0.75+Math.PI*1.5*k;
-      const big=i%5===0;
-      ctx.strokeStyle=rgba(TOK.line,(big?0.55:0.24)*machShow);
-      ctx.beginPath();
-      ctx.moveTo(cx+Math.cos(ang)*r, my+Math.sin(ang)*r);
-      ctx.lineTo(cx+Math.cos(ang)*(r-(big?16:9)), my+Math.sin(ang)*(r-(big?16:9)));
-      ctx.stroke();
-      if(big){ ctx.fillStyle=rgba(TOK.muted,0.8*machShow);
-        ctx.fillText((0.80+0.1*(i/5)).toFixed(2), cx+Math.cos(ang)*(r-32), my+Math.sin(ang)*(r-32)); }
-    }
-    const k=(mach-0.80)/0.20, ang=Math.PI*0.75+Math.PI*1.5*k;
-    ctx.strokeStyle=rgba(TOK.signal,0.95*machShow); ctx.lineWidth=2.4;
-    ctx.beginPath(); ctx.moveTo(cx,my); ctx.lineTo(cx+Math.cos(ang)*(r-22), my+Math.sin(ang)*(r-22)); ctx.stroke();
-    ctx.lineWidth=1;
-    ctx.fillStyle=rgba(TOK.text,machShow); ctx.font='700 '+Math.round(r*0.34)+'px "Space Mono", monospace';
-    ctx.fillText('M '+mach.toFixed(2), cx, my+r*0.52);
-    ctx.textAlign='left';
-  }
-
-  /* ---- 04 · le limbe, l'orthodromie, le terminateur ---- */
-  const earthT=Math.min(1,seg(p,0.50,0.58));
-  if(earthT>0.01){
-    const R=Math.max(W,H)*1.15, ey=H*1.32;
-    const dawn=seg(p,0.66,0.78);              // R6 : la nuit devient l'aube
-    ctx.strokeStyle=rgba(TOK.line,0.42*earthT);
-    ctx.beginPath(); ctx.arc(cx,ey,R,Math.PI*1.16,Math.PI*1.84); ctx.stroke();
-    /* trame d'etoiles lointaine, couche du R1 */
-    const farOff=seg(p,0.48,0.66)*0.12*H;
-    ctx.fillStyle=rgba(TOK.line,0.16*earthT*(1-dawn));
-    for(let i=0;i<70;i++){
-      const sx=((i*97)%W), sy=((i*233)%(H*0.5))+farOff*0.3;
-      ctx.fillRect(sx,sy,1,1);
-    }
-    /* orthodromie, couche proche du R1 */
-    const nearOff=seg(p,0.48,0.66)*0.44*H;
-    ctx.save(); ctx.translate(0,-nearOff*0.18);
-    ctx.strokeStyle=rgba(TOK.accent,0.9*earthT); ctx.lineWidth=2;
-    ctx.beginPath();
-    for(let i=0;i<=48;i++){
-      const k=i/48, x=W*0.12+W*0.76*k, y=ey-R-H*0.06-Math.sin(k*Math.PI)*H*0.16;
-      i===0?ctx.moveTo(x,y):ctx.lineTo(x,y);
-    }
-    ctx.stroke(); ctx.lineWidth=1;
-    /* le point qui court vers l'aube */
-    const t=seg(p,0.52,0.72), x=W*0.12+W*0.76*t, y=ey-R-H*0.06-Math.sin(t*Math.PI)*H*0.16;
-    ctx.strokeStyle=rgba(TOK.text,0.95*earthT); plane(x,y,0.42,-0.12);
-    ctx.restore();
-    /* la ligne de terminateur */
-    const tx=W*(0.86-0.10*dawn);
-    ctx.strokeStyle=rgba(TOK.signal,(0.35+0.5*dawn)*earthT); ctx.lineWidth=1.6;
-    ctx.beginPath(); ctx.moveTo(tx,0); ctx.lineTo(tx-W*0.06,H); ctx.stroke(); ctx.lineWidth=1;
-    ctx.fillStyle=rgba(TOK.muted,0.8*earthT); ctx.font='400 10px "Space Mono", monospace';
-    ctx.fillText('TERMINATOR', tx+8, 26);
-  }
-
-  /* ---- 01 → 02 · R2 : la silhouette franchit la frontiere ---- */
-  const cross=seg(p,0.09,0.22);
-  if(p<0.24){
-    const a=1-seg(p,0.20,0.24);
-    ctx.strokeStyle=rgba(TOK.text,0.92*a);
-    plane(cx, lerp(H*0.86,-H*0.18,cross), lerp(1.5,0.9,cross), lerp(0,-0.26,cross));
-  }
+function paint(){
+  const d=routeData(active);
+  document.getElementById('rLbl').textContent=d.fa+' → '+d.ta;
+  document.getElementById('rMin').textContent=d.gain;
+  document.getElementById('rMeta').innerHTML =
+    '<span>Great-circle <b>'+Math.round(d.nm).toLocaleString('en-US')+' nm</b></span>'+
+    '<span>Non-stop <b class="'+(d.stop?'ok':'')+'">'+(d.stop?'yes':'no')+'</b></span>'+
+    '<span>Mach 0.85 <b>'+hhmm(d.tC)+'</b></span>'+
+    '<span>Mach 0.95 <b>'+hhmm(d.tT)+'</b></span>';
+  const bs=rail.children;
+  for(let i=0;i<bs.length;i++) bs[i].setAttribute('aria-pressed', i===active?'true':'false');
+  drawRoute();
 }
 
-/* ---------- blocs de chapitre ---------- */
-const b1=document.getElementById('b1'), b2=document.getElementById('b2'),
-      b3=document.getElementById('b3'), b4=document.getElementById('b4'),
-      calc=document.getElementById('calc'), ledger=document.getElementById('ledger');
-const place=(el,x,y)=>{ el.style.transform='translate3d('+x+','+y+',0)'; };
-function dom(p){
-  place(b1,'0', lerp(0,122,seg(p,0.08,0.15))+'vh');
-  place(b2,'0', (lerp(-122,0,seg(p,0.16,0.21))+lerp(0,-122,seg(p,0.28,0.33)))+'vh');
-  place(b3,'0', (lerp(122,0,seg(p,0.34,0.39))+lerp(0,-122,seg(p,0.52,0.57)))+'vh');
-  place(b4,'0', (lerp(122,0,seg(p,0.58,0.63))+lerp(0,-122,seg(p,0.84,0.89)))+'vh');
-  place(calc, lerp(118,0,seg(p,0.68,0.74))+'vw', lerp(0,-140,seg(p,0.94,0.98))+'vh');
-  place(ledger,'0', lerp(100,0,seg(p,0.88,0.94))+'vh');
-  /* R7 : dissolution granuleuse, pic exactement au basculement */
-  const d = seg(p,0.28,0.32)*88 * (1-seg(p,0.32,0.36));
-  disp.setAttribute('scale', d.toFixed(1));
-  stage.style.filter = d>0.4 ? 'url(#grainfx)' : '';
+/* ---------- le film : #33, une seule tête de lecture ---------- */
+const hero=document.getElementById('hero'), panel=document.getElementById('panel'),
+      log=document.getElementById('log'), stair=document.getElementById('stair'),
+      picker=document.getElementById('picker'), foot=document.getElementById('foot'),
+      hud=document.getElementById('hud');
+const put=(el,y)=>{ el.style.transform='translate3d(0,'+y.toFixed(2)+'vh,0)'; };
+function render(p){
+  /* Chaque plan RECOUVRE le precedent, geometriquement. Aucun fondu, aucune opacite. */
+  put(hero,  lerp(0,-24,seg(p,0.10,0.24)));
+  put(panel, lerp(102,0,seg(p,0.10,0.24)) + lerp(0,-24,seg(p,0.30,0.44)));
+  put(log,   lerp(102,0,seg(p,0.30,0.44)) + lerp(0,-24,seg(p,0.48,0.60)));
+  put(stair, lerp(102,0,seg(p,0.48,0.60)) + lerp(0,-24,seg(p,0.64,0.76)));
+  put(picker,lerp(102,0,seg(p,0.64,0.76)) + lerp(0,-24,seg(p,0.88,0.96)));
+  put(foot,  lerp(102,0,seg(p,0.88,0.96)));
+  const sombre = (p>0.18&&p<0.55) || (p>0.71&&p<0.93);
+  hud.classList.toggle('onink', sombre);
 }
-function render(p){ lastP=p; draw(p); dom(p); }
-
-/* ---------- montage ---------- */
 let lenis=null;
 gsap.registerPlugin(ScrollTrigger);
-if(!REDUCED && window.Lenis){
-  lenis=new Lenis({lerp:0.08});
+if(!REDUCED&&window.Lenis){ lenis=new Lenis({lerp:0.08});
   lenis.on('scroll',ScrollTrigger.update);
-  gsap.ticker.add(t=>{ if(lenis) lenis.raf(t*1000); });
-  gsap.ticker.lagSmoothing(0);
-}
+  gsap.ticker.add(function(t){ if(lenis) lenis.raf(t*1000); });
+  gsap.ticker.lagSmoothing(0); }
 window.captureMode=function(){ if(lenis&&lenis.destroy){lenis.destroy();lenis=null;} ScrollTrigger.refresh(); };
 
 const FRAMES=1000, playhead={f:0};
-const film=gsap.timeline({ scrollTrigger:{ trigger:'#film', start:'top top', end:'bottom bottom',
-  scrub:true, pin:'#stage', anticipatePin:1 }, defaults:{ease:'none'} });
-film.to(playhead,{ f:FRAMES-1, duration:1, onUpdate:()=>render(playhead.f/(FRAMES-1)) },0);
-film.addLabel('ch1',0).addLabel('ch2',0.13).addLabel('ch3',0.31)
-    .addLabel('ch4',0.52).addLabel('ch5',0.70).addLabel('ch6',0.88);
+const film=gsap.timeline({ scrollTrigger:{ trigger:'#spacer', start:'top top', end:'bottom bottom',
+  scrub:true, pin:'.fixed-layer', anticipatePin:1 }, defaults:{ease:'none'} });
+film.to(playhead,{ f:FRAMES-1, duration:1, onUpdate:function(){ render(playhead.f/(FRAMES-1)); } },0);
+film.addLabel('ch1',0).addLabel('ch2',0.10).addLabel('ch3',0.30)
+    .addLabel('ch4',0.48).addLabel('ch5',0.64).addLabel('ch6',0.88);
 
-
-function boot(){
-  sizePlate(); renderRoute(); render(0);
-  if(REDUCED) return;
-  const ink={v:0};
-  const clip=()=>{ plate.style.clipPath='inset(0 '+(100-ink.v*100).toFixed(2)+'% 0 0)'; };
-  clip();
-  gsap.to(ink,{v:1,duration:1.2,ease:'none',onUpdate:clip,onComplete:()=>{plate.style.clipPath='';}});
-}
-window.addEventListener('resize',()=>{ sizePlate(); render(lastP); ScrollTrigger.refresh(); });
-if(document.fonts&&document.fonts.ready) document.fonts.ready.then(()=>render(lastP));
-boot();
+window.addEventListener('resize',function(){ drawRoute(); ScrollTrigger.refresh(); });
+if(document.fonts&&document.fonts.ready) document.fonts.ready.then(drawRoute);
+paint(); render(0);
 })();
 </script>
 </body>
