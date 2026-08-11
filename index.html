@@ -63,7 +63,9 @@ button{font:inherit;color:inherit}
   letter-spacing:-0.03em;text-wrap:balance}
 .blk em{font-family:var(--font-edito);font-style:italic;font-weight:400}
 .blk p{margin-top:1em;max-width:38ch;color:var(--line);font-size:var(--step-body)}
-#b1{left:clamp(18px,4vw,52px);bottom:12vh;width:min(56vw,760px)}
+/* le titre passe a DROITE : il sort du nez de l avion et se pose dans le noir */
+#b1{right:clamp(18px,4vw,52px);bottom:12vh;width:min(40vw,560px);text-align:right}
+#b1 p{margin-left:auto}
 #b2{right:clamp(18px,4vw,52px);top:18vh;width:min(40vw,520px);text-align:right}
 #b2 p{margin-left:auto}
 #b3{left:clamp(18px,4vw,52px);top:16vh;width:min(44vw,600px)}
@@ -119,7 +121,8 @@ button{font:inherit;color:inherit}
 
 @media (max-width:900px){
   .hud .tr{display:none}
-  #b1,#b3,#b4{width:min(86vw,560px)}
+  #b1{right:clamp(18px,4vw,52px);width:min(78vw,460px)}
+  #b3,#b4{width:min(86vw,560px)}
   #b2{width:min(80vw,440px)}
   .log{right:auto;left:clamp(18px,4vw,52px);width:min(86vw,560px);grid-template-columns:auto auto 1fr}
 }
